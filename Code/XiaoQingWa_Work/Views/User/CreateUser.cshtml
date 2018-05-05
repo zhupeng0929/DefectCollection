@@ -1,0 +1,142 @@
+﻿@model XiaoQingWa_Work_Model.Entity.UserInfoEntity
+
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form">
+        @Html.HiddenFor(m => m.UserId, Model.UserId)
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>用户名：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @*<input type="text" class="input-text" value="" placeholder="" id="UserName" name="UserName">*@
+                @Html.TextBoxFor(m => m.UserName, Model.UserName, new { @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+        @if (Model.UserId == 0)
+        {
+            <div class="row cl">
+                <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>密码：</label>
+                <div class="formControls col-xs-7 col-sm-8">
+                    @*<input type="password" class="input-text" value="" placeholder="" id="PassWord" name="PassWord">*@
+                    @Html.TextBoxFor(m => m.PassWord, Model.PassWord, new { type = "password", @class = "input-text", @value = "", @placeholder = "" })
+                </div>
+            </div>
+        }
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>性别：</label>
+            <div class="formControls col-xs-7 col-sm-8 skin-minimal">
+                <div class="radio-box">
+                    @*<input name="UserSex" type="radio" id="sex-1" checked>*@
+                    @Html.RadioButtonFor(m => m.UserSex, 1, new { id = "sex-1" })
+                    <label for="sex-1">男</label>
+                </div>
+                <div class="radio-box">
+                    @*<input type="radio" id="sex-2" name="UserSex">*@
+                    @Html.RadioButtonFor(m => m.UserSex, 2, new { id = "sex-2" })
+                    <label for="sex-2">女</label>
+                </div>
+                <div class="radio-box">
+                    @*<input type="radio" id="sex-3" name="UserSex">*@
+                    @Html.RadioButtonFor(m => m.UserSex, 3, new { id = "sex-3" })
+                    <label for="sex-3">保密</label>
+                </div>
+
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>手机：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @*<input type="text" class="input-text" value="" placeholder="" id="UserPhone" name="UserPhone">*@
+                @Html.TextBoxFor(m => m.UserPhone, Model.UserPhone, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>邮箱：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @*<input type="text" class="input-text" placeholder="@Html.Raw("@")" name="UserMail" id="UserMail">*@
+                @Html.TextBoxFor(m => m.UserMail, Model.UserMail, new { type = "text", @class = "input-text", @value = "", @placeholder = "@" })
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2">地址：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @*<input type="text" class="input-text" name="UserAddress" id="UserAddress">*@
+                @Html.TextBoxFor(m => m.UserAddress, Model.UserAddress, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-7 col-sm-8 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="button" id="btnSave" onclick="member_add()" value="提交">
+            </div>
+        </div>
+    </form>
+</article>
+
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.skin-minimal input').iCheck({
+                checkboxClass: 'icheckbox-blue',
+                radioClass: 'iradio-blue',
+                increaseArea: '20%'
+            });
+
+            initValidator();
+        });
+        var validator;
+        function initValidator() {
+            validator = $("#form").validate({
+                rules: {
+                    UserName: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 16
+                    },
+                    PassWord: {
+                        required: true,
+                        minlength: 6,
+                    },
+                    UserSex: {
+                        required: true,
+                    },
+                    UserPhone: {
+                        required: true,
+                        isMobile: true,
+                    },
+                    UserMail: {
+                        required: true,
+                        email: true,
+                    },
+
+
+                },
+                onkeyup: false,
+                focusCleanup: true,
+                onfocusout: false,
+                onclick: false
+            });
+        }
+
+        /*用户-添加*/
+        function member_add() {
+            if (!validator.form())
+                return false;
+        var url = '@Url.Action("CreateUser")';
+        var params = $('form').serializeArray();
+        $("#btnSave").attr('disabled', true);
+        $("#btnSave").val("保存中...");
+        $.post(url, params, function (data) {
+
+            if (data.Value == "success") {
+                layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
+                    layer_close();
+                });
+            } else {
+                $("#btnSave").removeAttr('disabled');
+                $("#btnSave").val("保存");
+                layer.msg(data.Text, { icon: 2, time: 1000 });
+            }
+        });
+        }
+    </script>
+}

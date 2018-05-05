@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Error";
+}
+
+<style type="text/css">
+        body
+        {
+            background: #f3f3f3 repeat-x top left;
+            text-align:center;
+            padding:10px;
+        }
+</style>
+<div style="border: 1px solid #bdbdbd;background-color: #fff; margin:0 auto; width:400px; height:100px; margin-top:100px; padding-top:50px;">
+    @if (string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <h2>
+        抱歉，处理您的请求时出错。
+    </h2>
+    <span>Error Id:<a href="http://manage.17usoft.com/ExceptionHandle/ErrorDetail.aspx?flag=1&id=@ViewBag.ErrorId" target="_blank">@ViewBag.ErrorId</a></span>
+    <br />
+    <div style=" float:right; margin-right:50px;">
+        @Html.ActionLink("返回首页", "Index2","Account")
+    </div>
+    }
+    else
+    {
+        <h2>@ViewBag.Message</h2>
+         <div style=" float:right; margin-right:50px;">
+        @Html.ActionLink("返回首页", "Index2","Home")
+    </div>
+    }
+</div>

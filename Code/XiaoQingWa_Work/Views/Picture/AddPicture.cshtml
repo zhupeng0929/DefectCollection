@@ -1,0 +1,156 @@
+﻿<div class="page-container">
+    <form class="form form-horizontal" id="form-article-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图片标题：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="" name="">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">简略标题：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="" name="">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类栏目：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select name="" class="select">
+                        <option value="0">全部栏目</option>
+                        <option value="1">新闻资讯</option>
+                        <option value="11">├行业动态</option>
+                        <option value="12">├行业资讯</option>
+                        <option value="13">├行业新闻</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">排序值：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="0" placeholder="" id="" name="">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">允许评论：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <div class="check-box">
+                    <input type="checkbox" id="checkbox-1">
+                    <label for="checkbox-1">&nbsp;</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>发布日期：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>结束日期：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })" id="datemax" class="input-text Wdate">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">图片作者：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="0" placeholder="" id="" name="">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">图片来源：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="0" placeholder="" id="" name="">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">关键词：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="0" placeholder="" id="" name="">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">图片摘要：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <textarea name="" cols="" rows="" class="textarea" placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="$.Huitextarealength(this,200)"></textarea>
+                <p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">缩略图：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <div class="uploader-thum-container">
+                    <div id="fileList" class="uploader-list"></div>
+                    <div id="filePicker">选择图片</div>
+                    <button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">图片上传：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <div id="filePicker-2"></div>
+                <input type="hidden" id="himgPath" value=""/>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button onClick="article_save_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+                <button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
+                <button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+    @section pagescripts{
+
+        
+        <!-- 引用核心层插件 -->
+        <script type="text/javascript" src="@Url.Content("~/plugins/lib/html5up/core/zyFile.js")"></script>
+        <!-- 引用控制层插件 -->
+        <script type="text/javascript" src="@Url.Content("~/plugins/lib/html5up/control/js/zyUpload.js")"></script>
+        <script type="text/javascript">
+            $(function () {
+                // 初始化插件
+                $("#filePicker-2").zyUpload({
+                    //width            :   "650px",                 // 宽度
+                    //height           :   "400px",                 // 宽度
+                    itemWidth: "120px",                 // 文件项的宽度
+                    itemHeight: "100px",                 // 文件项的高度
+                    url: "@Url.Action("SaveUploadFile","Home")",  // 上传文件的路径
+                    multiple: true,                    // 是否可以多个文件上传
+                    dragDrop: false,                    // 是否可以拖动上传文件
+                    del: true,                          // 是否可以删除文件
+                    finishDel: false,  				  // 是否在上传文件完成后删除预览
+                    /* 外部获得的回调接口 */
+                    onSelect: function (files, allFiles) {                    // 选择文件的回调方法
+                        console.info("当前选择了以下文件：");
+                        console.info(files);
+                        console.info("之前没上传的文件：");
+                        console.info(allFiles);
+                        $(".upload_btn").click();
+                    },
+                    onDelete: function (file, surplusFiles) {                     // 删除一个文件的回调方法
+                        console.info("当前删除了此文件：");
+                        console.info(file);
+                        console.info("当前剩余的文件：");
+                        console.info(surplusFiles);
+                    },
+                    onSuccess: function (file, response) {                    // 文件上传成功的回调方法
+                        console.info("此文件上传成功：");
+                        console.info(response);
+                    },
+                    onFailure: function (file) {                    // 文件上传失败的回调方法
+                        console.info("此文件上传失败：");
+                        console.info(file);
+                    },
+                    onComplete: function (responseInfo) {           // 上传完成的回调方法
+                        console.info("文件上传完成");
+                        console.info(responseInfo);
+                    }
+                });
+            });
+
+        </script>
+    }
