@@ -51,9 +51,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\PictureInfoEntity.cs" />
+    <Compile Include="Entity\TCounterEntity.cs" />
+    <Compile Include="Entity\TLineEntity.cs" />
+    <Compile Include="Entity\TRecordDetailEntity.cs" />
+    <Compile Include="Entity\TTaskEntity.cs" />
+    <Compile Include="Entity\TTaskWorkerEntity.cs" />
+    <Compile Include="Entity\TWorkerEntity.cs" />
+    <Compile Include="Entity\TWorkerLineEntity.cs" />
+    <Compile Include="Entity\TWorkScheduleEntity.cs" />
     <Compile Include="Entity\UserInfoEntity.cs" />
     <Compile Include="Enum\Enum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TStationEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />

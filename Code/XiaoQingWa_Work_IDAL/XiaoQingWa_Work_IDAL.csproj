@@ -46,6 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPictureInfoRepository.cs" />
+    <Compile Include="ITCounterRepository.cs" />
+    <Compile Include="ITLineRepository.cs" />
+    <Compile Include="ITRecordDetailRepository.cs" />
+    <Compile Include="ITStationRepository.cs" />
+    <Compile Include="ITTaskRepository.cs" />
+    <Compile Include="ITTaskWorkerRepository.cs" />
+    <Compile Include="ITWorkerLineRepository.cs" />
+    <Compile Include="ITWorkerRepository.cs" />
+    <Compile Include="ITWorkScheduleRepository.cs" />
     <Compile Include="IUserInfoRepository.cs" />
     <Compile Include="IDependency.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -59,6 +59,15 @@
     <Compile Include="BaseEntity.cs" />
     <Compile Include="PictureInfoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TCounterRepository.cs" />
+    <Compile Include="TLineRepository.cs" />
+    <Compile Include="TRecordDetailRepository.cs" />
+    <Compile Include="TStationRepository.cs" />
+    <Compile Include="TTaskRepository.cs" />
+    <Compile Include="TTaskWorkerRepository.cs" />
+    <Compile Include="TWorkerLineRepository.cs" />
+    <Compile Include="TWorkerRepository.cs" />
+    <Compile Include="TWorkScheduleRepository.cs" />
     <Compile Include="UserInfoRepository.cs" />
   </ItemGroup>
   <ItemGroup>
