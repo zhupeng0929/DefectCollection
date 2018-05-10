@@ -1325,6 +1325,7 @@
     <Content Include="Views\Counter\CreateCounter.cshtml" />
     <Content Include="Views\Counter\CounterList.cshtml" />
     <Content Include="Views\Counter\CounterListResult.cshtml" />
+    <Content Include="Views\Station\BondCounter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

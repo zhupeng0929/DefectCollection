@@ -14,6 +14,8 @@ namespace XiaoQingWa_Work_IDAL
         bool UpdateTStation(TStationEntity entity);
         bool UpdateTStation(TStationEntity entity, IDbConnection conn, IDbTransaction trans);
         List<TStationEntity> GetStationListByQueryModel(StationQuery lineQuery);
-        bool UpdateStatu(int id, int state); 
+        bool UpdateStatu(int id, int state);
+        bool BondCounter(int StationId, string GoodBtnId, string BadBtnId, int type);
+        bool UnBindStation(int id, string code, int type);
     }
 }

@@ -43,13 +43,13 @@ namespace XiaoQingWa_Work.Controllers
                 result.Message = "任务单名称不能为空";
                 return result;
             }
-            if (taskEntity.StartDateTime == null)
+            if (taskEntity.StartDateTime == null|| taskEntity.StartDateTime == DateTime.Parse("1900-1-1"))
             {
                 result.Status = false;
                 result.Message = "任务单开始时间不能为空";
                 return result;
             }
-            if (taskEntity.EndDateTime == null)
+            if (taskEntity.EndDateTime == null||taskEntity.EndDateTime == DateTime.Parse("1900-1-1"))
             {
                 result.Status = false;
                 result.Message = "任务单结束时间不能为空";
@@ -77,6 +77,12 @@ namespace XiaoQingWa_Work.Controllers
             {
                 result.Status = false;
                 result.Message = "物料数量不能为0";
+                return result;
+            }
+            if (taskEntity.OperateType <= 0|| taskEntity.OperateType > 2)
+            {
+                result.Status = false;
+                result.Message = "类型错误";
                 return result;
             }
             #endregion

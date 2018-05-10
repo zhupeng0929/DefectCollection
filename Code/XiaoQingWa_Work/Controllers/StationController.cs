@@ -145,5 +145,57 @@ namespace XiaoQingWa_Work.Controllers
 
             return Json(msg);
         }
+
+        public ActionResult BondCounter(string stationcode, int type = 0)
+        {
+            List<SelectListItem> spanSltlist = new List<SelectListItem>();
+            spanSltlist.Add(new SelectListItem { Text = "--请选择--", Value = "" });
+            var counterList = tCounterRepository.GetList().Where(c => c.Status == 0);
+            if (counterList != null)
+            {
+                foreach (var info in counterList)
+                {
+                    spanSltlist.Add(new SelectListItem { Text = info.CountNo, Value = info.CountNo.ToString() });
+                }
+            }
+            ViewBag.CounterList = spanSltlist;
+            ViewBag.Type = type;
+            var model = new TStationEntity();
+            if (!string.IsNullOrWhiteSpace(stationcode))
+            {
+                model = tStationRepository.GetSingle(stationcode);
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult BondCounter(int StationId, string GoodBtnId, string BadBtnId, int type)
+        {
+            ReturnJsonMessage msg = new ReturnJsonMessage();
+            var result = false;
+            if (string.IsNullOrWhiteSpace(GoodBtnId) && string.IsNullOrWhiteSpace(BadBtnId))
+            {
+                msg.Text = "请选择设备";
+                msg.Value = "error";
+                return Json(msg);
+            }
+            result=tStationRepository.BondCounter(StationId, GoodBtnId, BadBtnId, type);
+            msg.Text = result ? "绑定成功" : "绑定失败";
+            msg.Value = result ? "success" : "error";
+            return Json(msg);
+        }
+        [HttpPost]
+        public ActionResult UnBindStation(int id,string code,int type)
+        {
+            ReturnJsonMessage msg = new ReturnJsonMessage();
+            var result = false;
+            
+            result = tStationRepository.UnBindStation(id, code, type);
+            msg.Text = result ? "解绑成功" : "解绑失败";
+            msg.Value = result ? "success" : "error";
+            return Json(msg);
+
+        }
+
     }
 }

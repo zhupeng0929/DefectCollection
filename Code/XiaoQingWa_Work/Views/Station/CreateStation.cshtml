@@ -4,6 +4,10 @@
     <form action="" method="post" class="form form-horizontal" id="form">
         @Html.HiddenFor(m => m.StationId, Model.StationId)
         @Html.HiddenFor(m => m.LineName, Model.LineName)
+        @Html.HiddenFor(m => m.GoodBtnId, Model.GoodBtnId)
+        @Html.HiddenFor(m => m.BadBtnId, Model.BadBtnId)
+        @Html.HiddenFor(m => m.GoodLastTime, Model.GoodLastTime)
+        @Html.HiddenFor(m => m.BadLastTime, Model.BadLastTime)
         <div class="row cl">
             <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>工位编码：</label>
             <div class="formControls col-xs-7 col-sm-8">
@@ -33,11 +37,11 @@
             </div>
         </div>
         @*<div class="row cl">
-                <label class="form-label col-xs-3 col-sm-2">流水线名称：</label>
-                <div class="formControls col-xs-7 col-sm-8">
-                    @Html.TextBoxFor(m => m.LineName, Model.LineName, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
-                </div>
-            </div>*@
+            <label class="form-label col-xs-3 col-sm-2">流水线名称：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.LineName, Model.LineName, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>*@
         <div class="row cl">
             <label class="form-label col-xs-3 col-sm-2">工位顺序索引：</label>
             <div class="formControls col-xs-7 col-sm-8">

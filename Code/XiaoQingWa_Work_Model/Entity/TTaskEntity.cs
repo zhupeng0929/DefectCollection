@@ -147,6 +147,12 @@ namespace XiaoQingWa_Work_Model.Entity
             set { _diffCount = value; }
         }
 
+        /// <summary>
+        /// 操作类型0-新增，1-修改，2-删除
+        /// </summary>
+        [NotMapped]
+       
+        public int OperateType { get; set; }
 
     }
 }
