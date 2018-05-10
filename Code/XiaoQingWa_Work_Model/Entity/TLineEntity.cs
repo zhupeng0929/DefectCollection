@@ -33,7 +33,7 @@ namespace XiaoQingWa_Work_Model.Entity
         /// <summary>
         /// 流水线编码
         /// </summary>
-        [Key]
+       
         [Description("流水线编码")]
         public string LCode
         {
@@ -80,7 +80,19 @@ namespace XiaoQingWa_Work_Model.Entity
             get { return _stationCount; }
             set { _stationCount = value; }
         }
+        [Description("自增id")]
+        [Key]
+        public int LId
+        {
+            get;
+            set;
+        }
 
 
+    }
+
+    public class LineQuery
+    {
+        public string keyWords { get; set; }
     }
 }

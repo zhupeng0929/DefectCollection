@@ -1,4 +1,4 @@
-﻿@model IEnumerable<XiaoQingWa_Work_Model.Entity.UserInfoEntity>
+﻿@model List<XiaoQingWa_Work_Model.Entity.UserInfoEntity>
 @using XiaoQingWa_Work_Utility
 @using XiaoQingWa_Work_Model.Enum
 
@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model != null)
+        @if (Model != null && Model.Count() > 0)
         {
             foreach (var item in Model)
             {
@@ -63,14 +63,7 @@
                 </tr>
             }
         }
-        else
-        {
-            <tr>
-                <td colspan='8'>
-                    <span style='color: #FF8C40'>暂无数据显示</span>
-                </td>
-            </tr>
-        }
+
     </tbody>
 </table>
 @section pagescripts{
@@ -85,7 +78,7 @@
                 ]
             });
         });
-        
+
     </script>
 
 }

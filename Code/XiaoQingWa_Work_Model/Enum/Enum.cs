@@ -13,13 +13,13 @@ namespace XiaoQingWa_Work_Model.Enum
         /// 停用
         /// </summary>
         [Description("停用")]
-        Enable = 0,
+        Disable    = 0,
 
         /// <summary>
         /// 启用
         /// </summary>
         [Description("启用")]
-        Disable = 1
+        Enable = 1
     }
     public enum Sex
     {
@@ -47,5 +47,33 @@ namespace XiaoQingWa_Work_Model.Enum
         S = 3,
     }
 
-   
+   public enum StationStatu
+    {
+        /// <summary>
+        /// 正常
+        /// </summary>
+        [Description("正常")]
+        Enable = 0,
+
+        /// <summary>
+        /// 故障暂停使用
+        /// </summary>
+        [Description("故障暂停使用")]
+        Disable  = 1
+    }
+
+    public enum CounterStatu
+    {
+        /// <summary>
+        /// 未启用
+        /// </summary>
+        [Description("未启用")]
+        Disable = 0,
+
+        /// <summary>
+        /// 启用
+        /// </summary>
+        [Description("启用")]
+        Enable = 1
+    }
 }

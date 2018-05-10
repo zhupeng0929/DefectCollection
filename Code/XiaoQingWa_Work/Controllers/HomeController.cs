@@ -56,7 +56,7 @@ namespace XiaoQingWa_Work.Controllers
                     newPictureInfo.FileMD5 = pictureMD5;
                     newPictureInfo.FilePath = filePath;
                     newPictureInfo.OldName = imgUpFile[0].FileName;
-                    var id = pictureInfoRepository.Add(newPictureInfo);//新增图片
+                    var id = pictureInfoRepository.AddReturnInt(newPictureInfo);//新增图片
                     returnJsonMessage.Text = "true";
                     returnJsonMessage.Value = id.ToString();
                 }

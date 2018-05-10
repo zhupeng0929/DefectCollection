@@ -1,0 +1,72 @@
+﻿@model XiaoQingWa_Work_Model.Entity.TCounterEntity
+
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form">
+        @Html.HiddenFor(m => m.CId, Model.CId)
+       
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>设备编码：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.CountNo, Model.CountNo, new { @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-7 col-sm-8 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="button" id="btnSave" onclick="member_add()" value="提交">
+            </div>
+        </div>
+    </form>
+</article>
+
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.skin-minimal input').iCheck({
+                checkboxClass: 'icheckbox-blue',
+                radioClass: 'iradio-blue',
+                increaseArea: '20%'
+            });
+
+            initValidator();
+        });
+        var validator;
+        function initValidator() {
+            validator = $("#form").validate({
+                rules: {
+                    CountNo	: {
+                        required: true,
+                        maxlength: 50
+                    }
+
+                },
+                onkeyup: false,
+                focusCleanup: true,
+                onfocusout: false,
+                onclick: false
+            });
+        }
+       
+        /*用户-流水线*/
+        function member_add() {
+            if (!validator.form())
+                return false;
+        var url = '@Url.Action("CreateCounter")';
+        var params = $('form').serializeArray();
+        $("#btnSave").attr('disabled', true);
+        $("#btnSave").val("保存中...");
+        $.post(url, params, function (data) {
+
+            if (data.Value == "success") {
+                layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
+                    layer_close();
+                });
+            } else {
+                $("#btnSave").removeAttr('disabled');
+                $("#btnSave").val("保存");
+                layer.msg(data.Text, { icon: 2, time: 1000 });
+            }
+        });
+        }
+    </script>
+}

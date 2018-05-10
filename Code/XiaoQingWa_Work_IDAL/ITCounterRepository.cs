@@ -13,5 +13,7 @@ namespace XiaoQingWa_Work_IDAL
         List<TCounterEntity> GetTCounterList();
         bool UpdateTCounter(TCounterEntity entity);
         bool UpdateTCounter(TCounterEntity entity, IDbConnection conn, IDbTransaction trans);
+        List<TCounterEntity> GetCounterListByQueryModel(string CountNo);
+        bool UpdateStatu(int id, int state);
     }
 }

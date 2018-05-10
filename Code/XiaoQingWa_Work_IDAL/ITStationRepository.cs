@@ -13,5 +13,7 @@ namespace XiaoQingWa_Work_IDAL
         List<TStationEntity> GetTStationList();
         bool UpdateTStation(TStationEntity entity);
         bool UpdateTStation(TStationEntity entity, IDbConnection conn, IDbTransaction trans);
+        List<TStationEntity> GetStationListByQueryModel(StationQuery lineQuery);
+        bool UpdateStatu(int id, int state); 
     }
 }

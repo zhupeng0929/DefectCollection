@@ -41,6 +41,7 @@ namespace XiaoQingWa_Work_Model.Entity
         /// 工位编码
         /// </summary>
         [Key]
+        [Required]
         [Description("工位编码")]
         public string StationCode
         {
@@ -158,6 +159,13 @@ namespace XiaoQingWa_Work_Model.Entity
             set { _status = value; }
         }
 
+        [Description("自增id")]
+        [Dapper.ReadOnly(true)]
+        public int StationId { get; set; }
 
+    }
+    public class StationQuery
+    {
+        public string keyWords { get; set; }
     }
 }

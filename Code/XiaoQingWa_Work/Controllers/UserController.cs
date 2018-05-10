@@ -40,7 +40,7 @@ namespace XiaoQingWa_Work.Controllers
                     userInfoEntity.PassWord = CommonHelper.Md5(userInfoEntity.PassWord);
                     userInfoEntity.CreateDate = DateTime.Now;
                     userInfoEntity.UserState = 1;
-                    result = userInfoRepository.Add(userInfoEntity)>0;
+                    result = userInfoRepository.AddReturnInt(userInfoEntity) > 0;
                 }
                 else
                 {

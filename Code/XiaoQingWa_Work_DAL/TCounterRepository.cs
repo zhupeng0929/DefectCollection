@@ -144,5 +144,47 @@ namespace XiaoQingWa_Work_DAL
             row = conn.Update(entity, trans);
             return row > 0;
         }
+
+        public List<TCounterEntity> GetCounterListByQueryModel(string CountNo)
+        {
+            var mResult = new List<TCounterEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                StringBuilder strSql = new StringBuilder(" Select * from tCounter   where 1=1 ");
+
+                if (!string.IsNullOrWhiteSpace(CountNo))
+                {
+                    strSql.Append(" and CountNo=@keyWords ");
+                }
+                var param = new
+                {
+                    keyWords = CountNo
+                };
+
+                mResult = conn.Query<TCounterEntity>(strSql.ToString(), param).ToList();
+            }
+            return mResult;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public bool UpdateStatu(int id, int state)
+        {
+            if (id > 0)
+            {
+                using (IDbConnection conn = new SqlConnection(GetConnstr))
+                {
+                    string strSql = "update  tCounter   set Status=@Status where CId=@CId";
+                    var param = new { CId = id, Status = state };
+                    var result = conn.Execute(strSql, param);
+                    if (result > 0)
+                        return true;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace XiaoQingWa_Work_DAL
         /// <param name="conn"></param>
         /// <param name="trans"></param>
         /// <returns></returns>
-        public int Add(T model, IDbConnection conn = null, IDbTransaction trans = null)
+        public int AddReturnInt(T model, IDbConnection conn = null, IDbTransaction trans = null)
         {
             if (conn == null)
             {
@@ -43,19 +43,18 @@ namespace XiaoQingWa_Work_DAL
                 return conn.Insert<int>(model, trans);
             }
         }
-
-        public Task<int> AddAsync(T model, IDbConnection conn = null, IDbTransaction trans = null)
+        public string AddReturnStr(T model, IDbConnection conn = null, IDbTransaction trans = null)
         {
             if (conn == null)
             {
                 using (conn = new SqlConnection(GetConnstr))
                 {
-                    return conn.InsertAsync<int>(model, trans);
+                    return conn.Insert<string>(model, trans);
                 }
             }
             else
             {
-                return conn.InsertAsync<int>(model, trans);
+                return conn.Insert<string>(model, trans);
             }
         }
         /// <summary>
@@ -85,7 +84,7 @@ namespace XiaoQingWa_Work_DAL
         /// </summary>
         /// <param name="id">主键id</param>
         /// <returns></returns>
-        public T GetSingle(int id)
+        public T GetSingle(object id)
         {
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
@@ -103,13 +102,7 @@ namespace XiaoQingWa_Work_DAL
                 return conn.GetList<T>().ToList();
             }
         }
-        public Task<IEnumerable<T>> GetListAsync()
-        {
-            using (IDbConnection conn = new SqlConnection(GetConnstr))
-            {
-                return conn.GetListAsync<T>();
-            }
-        }
+        
         /// <summary>
         /// 更新实体
         /// </summary>

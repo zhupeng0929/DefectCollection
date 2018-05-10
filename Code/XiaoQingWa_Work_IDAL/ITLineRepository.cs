@@ -10,8 +10,9 @@ namespace XiaoQingWa_Work_IDAL
         bool DelTLine(int id);
         bool DelTLineBatch(int[] ids);
         TLineEntity GetTLine(int id);
-        List<TLineEntity> GetTLineList();
         bool UpdateTLine(TLineEntity entity);
         bool UpdateTLine(TLineEntity entity, IDbConnection conn, IDbTransaction trans);
+
+        List<TLineEntity> GetLineInfoListByQueryModel(LineQuery lineQuery);
     }
 }

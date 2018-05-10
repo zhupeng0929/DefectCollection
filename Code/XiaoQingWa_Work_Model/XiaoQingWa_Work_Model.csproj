@@ -62,7 +62,7 @@
     <Compile Include="Entity\UserInfoEntity.cs" />
     <Compile Include="Enum\Enum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TStationEntity.cs" />
+    <Compile Include="Entity\TStationEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />

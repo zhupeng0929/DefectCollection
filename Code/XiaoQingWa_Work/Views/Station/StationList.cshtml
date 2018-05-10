@@ -1,32 +1,30 @@
 ﻿@using XiaoQingWa_Work_Utility
 @using XiaoQingWa_Work_Model.Enum
-@{
-    ViewBag.Title = "UserList";
-}
+
 <nav class="breadcrumb">
     <i class="Hui-iconfont">&#xe67f;</i>
     首页 <span class="c-gray en">&gt;</span>
-    用户中心 <span class="c-gray en">&gt;</span>
-    用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+    工作管理 <span class="c-gray en">&gt;</span>
+    工位管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
         <i class="Hui-iconfont">&#xe68f;</i>
     </a>
 </nav>
 <div class="page-container">
     <form action="UserList" method="post" class="form form-horizontal" id="form">
         <div class="text-l">
-            日期范围：
+            @*日期范围：
             <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" name="datemin" class="input-text Wdate" style="width:120px;">
             -
-            <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" name="datemax" class="input-text Wdate" style="width:120px;">
-            <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="keyWords" name="keyWords">
-            <button type="button" class="btn btn-success radius" id="searchBtn" name="" onclick="Search()"><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+            <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" name="datemax" class="input-text Wdate" style="width:120px;">*@
+            <input type="text" class="input-text" style="width:300px" placeholder="输入工位编码、名称、全称、流水线编码" id="keyWords" name="keyWords">
+            <button type="button" class="btn btn-success radius" id="searchBtn" name="" onclick="Search()"><i class="Hui-iconfont">&#xe665;</i> 搜工位</button>
         </div>
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
             <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a href="javascript:;" onclick="layer_show('添加用户','@Url.Action("CreateUser")','','510')" class="btn btn-primary radius">
-                <i class="Hui-iconfont">&#xe600;</i> 添加用户
+            <a href="javascript:;" onclick="layer_show('添加工位','@Url.Action("CreateStation")','750','560')" class="btn btn-primary radius">
+                <i class="Hui-iconfont">&#xe600;</i> 添加工位
             </a>
         </span>
 
@@ -38,18 +36,18 @@
 @section pagescripts{
     <script type="text/javascript">
         $(function () {
-            
+           
             Search();
         });
-        /*用户-停用*/
+        /*停用*/
         function member_stop(statu, id) {
-            var op = statu == 0 ? "确认要停用吗？" : "确认要启用吗？";
+            var op = statu == 1 ? "确认要停用吗？" : "确认要启用吗？";
             layer.confirm(op, function (index) {
                 var params = {
                     id: id,
                     statu: statu
                 };
-                var url = '@Url.Action("UpdateUserStatu")';
+                var url = '@Url.Action("UpdateStatu")';
                 $.post(url, params, function (data) {
                     if (data.Value == "success") {
                         layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
@@ -62,40 +60,18 @@
             });
         }
 
-        /*用户-启用*/
-        function member_start(obj, id) {
-            layer.confirm('确认要启用吗？', function (index) {
-                $.ajax({
-                    type: 'POST',
-                    url: '',
-                    dataType: 'json',
-                    success: function (data) {
-                        $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
-                        $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
-                        $(obj).remove();
-                        layer.msg('已启用!', { icon: 6, time: 1000 });
-                    },
-                    error: function (data) {
-                        console.log(data.msg);
-                    },
-                });
-            });
-        }
-        /*用户-编辑*/
+        /*编辑*/
         function member_edit(title, url, id, w, h) {
             layer_show(title, url, w, h);
         }
-        /*密码-修改*/
-        function change_password(title, url, id, w, h) {
-            layer_show(title, url+"?id="+id, w, h);
-        }
-        /*用户-删除*/
+       
+        /*删除*/
         function member_del(id) {
             layer.confirm('确认要删除吗？', function (index) {
                 var params = {
                     id: id
                 };
-                var url = '@Url.Action("DeleteUser")';
+                var url = '@Url.Action("DeleteStation")';
                 $.post(url, params, function (data) {
                     if (data.Value == "success") {
                         layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
@@ -110,7 +86,7 @@
         function datadel() {
 
             var idList = [];
-            var rows = $("input[name='UserIds']:checked");
+            var rows = $("input[name='Ids']:checked");
             if (rows) {
                 $.each(rows, function (index, item) {
                     var vl = $(item).val();
@@ -125,7 +101,7 @@
                 var params = {
                     ids: idList
                 };
-                var url = '@Url.Action("DeleteUserBatch")';
+                var url = '@Url.Action("DeleteStationBatch")';
                 $.post(url, params, function (data) {
                     if (data.Value == "success") {
                         layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
@@ -140,12 +116,10 @@
 
         function Search() {
             var params = $("form").serialize();
-            var url = '@Url.Action("UserListResult", "User")';
+            var url = '@Url.Action("StationListResult", "Station")';
             $("#searchBtn").attr("disabled", "disabled");
-            //waitPrompt.show("正在查询数据，请稍候...");
             $.post(url, params, function (data) {
                 $("#resultList").html(data);
-                //waitPrompt.close();
                 $("#searchBtn").removeAttr("disabled");
             });
         }

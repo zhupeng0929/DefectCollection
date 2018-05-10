@@ -64,8 +64,8 @@ namespace XiaoQingWa_Work_DAL
             {
                 using (IDbConnection conn = new SqlConnection(GetConnstr))
                 {
-                    string strSql = "delete from TLine where LCode=@LCode";
-                    var param = new { LCode = id };
+                    string strSql = "delete from TLine where LId=@LId";
+                    var param = new { LId = id };
                     var result = conn.Execute(strSql, param);
                     if (result > 0)
                         return true;
@@ -84,10 +84,10 @@ namespace XiaoQingWa_Work_DAL
             {
                 using (IDbConnection conn = new SqlConnection(GetConnstr))
                 {
-                    string strSql = "delete from  TLine where LCode in @LCode ";
+                    string strSql = "delete from  TLine where LId in @LId ";
 
                     DynamicParameters param = new DynamicParameters();
-                    param.Add("LCode", ids);
+                    param.Add("LId", ids);
                     var result = conn.Execute(strSql, param);
                     if (result > 0)
                         return true;
@@ -105,19 +105,6 @@ namespace XiaoQingWa_Work_DAL
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
                 mResult = conn.Get<TLineEntity>(id);
-            }
-            return mResult;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public List<TLineEntity> GetTLineList()
-        {
-            var mResult = new List<TLineEntity>();
-            using (IDbConnection conn = new SqlConnection(GetConnstr))
-            {
-                mResult = conn.GetList<TLineEntity>().ToList();
             }
             return mResult;
         }
@@ -143,6 +130,38 @@ namespace XiaoQingWa_Work_DAL
             int row;
             row = conn.Update(entity, trans);
             return row > 0;
+        }
+
+
+        public List<TLineEntity> GetLineInfoListByQueryModel(LineQuery lineQuery)
+        {
+            var mResult = new List<TLineEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                StringBuilder strSql = new StringBuilder("Select * from tLine where 1=1 ");
+
+                //if (userQuery.datemin != null && userQuery.datemin != new DateTime(1900, 1, 1))
+                //{
+                //    strSql.Append(" and  CreateDate>=@datemin ");
+                //}
+                //if (userQuery.datemax != null && userQuery.datemax != new DateTime(1900, 1, 1))
+                //{
+                //    strSql.Append(" and  CreateDate<@datemax ");
+                //}
+                if (!string.IsNullOrWhiteSpace(lineQuery.keyWords))
+                {
+                    strSql.Append(" and  (LCode=@keyWords or LName=@keyWords or LFullName=@keyWords or LType=@keyWords) ");
+                }
+                var param = new
+                {
+                    //datemin = userQuery.datemin,
+                    //datemax = userQuery.datemax,
+                    keyWords = lineQuery.keyWords
+                };
+
+                mResult = conn.Query<TLineEntity>(strSql.ToString(), param).ToList();
+            }
+            return mResult;
         }
     }
 }

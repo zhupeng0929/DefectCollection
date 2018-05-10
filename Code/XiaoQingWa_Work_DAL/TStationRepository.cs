@@ -37,8 +37,8 @@ namespace XiaoQingWa_Work_DAL
         {
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                var result = conn.Insert<int>(model);
-                if (result > 0)
+                var result = conn.Insert<string>(model);
+                if (result != null)
                     return true;
             }
             return false;
@@ -48,8 +48,8 @@ namespace XiaoQingWa_Work_DAL
         /// </summary>
         public bool AddTStation(TStationEntity model, IDbConnection conn, IDbTransaction trans)
         {
-            var result = conn.Insert<int>(model, trans);
-            if (result > 0)
+            var result = conn.Insert<string>(model, trans);
+            if (result != null)
                 return true;
             else
                 return false;
@@ -65,8 +65,8 @@ namespace XiaoQingWa_Work_DAL
             {
                 using (IDbConnection conn = new SqlConnection(GetConnstr))
                 {
-                    string strSql = "delete from TStation where StationCode=@StationCode";
-                    var param = new { StationCode = id };
+                    string strSql = "delete from TStation where StationId=@StationId";
+                    var param = new { StationId = id };
                     var result = conn.Execute(strSql, param);
                     if (result > 0)
                         return true;
@@ -85,10 +85,10 @@ namespace XiaoQingWa_Work_DAL
             {
                 using (IDbConnection conn = new SqlConnection(GetConnstr))
                 {
-                    string strSql = "delete from  TStation where StationCode in @StationCode ";
+                    string strSql = "delete from  TStation where StationId in @StationId ";
 
                     DynamicParameters param = new DynamicParameters();
-                    param.Add("StationCode", ids);
+                    param.Add("StationId", ids);
                     var result = conn.Execute(strSql, param);
                     if (result > 0)
                         return true;
@@ -144,6 +144,47 @@ namespace XiaoQingWa_Work_DAL
             int row;
             row = conn.Update(entity, trans);
             return row > 0;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public bool UpdateStatu(int id, int state)
+        {
+            if (id > 0)
+            {
+                using (IDbConnection conn = new SqlConnection(GetConnstr))
+                {
+                    string strSql = "update  tStation  set Status=@Status where StationId=@StationId";
+                    var param = new { StationId = id, Status = state };
+                    var result = conn.Execute(strSql, param);
+                    if (result > 0)
+                        return true;
+                }
+            }
+            return false;
+        }
+        public List<TStationEntity> GetStationListByQueryModel(StationQuery lineQuery)
+        {
+            var mResult = new List<TStationEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                StringBuilder strSql = new StringBuilder("Select * from tStation  where 1=1 ");
+
+                if (!string.IsNullOrWhiteSpace(lineQuery.keyWords))
+                {
+                    strSql.Append(" and  (StationCode=@keyWords or StationName=@keyWords or StationFullName=@keyWords or LineCode=@keyWords or LineName=@keyWords) ");
+                }
+                var param = new
+                {
+                    keyWords = lineQuery.keyWords
+                };
+
+                mResult = conn.Query<TStationEntity>(strSql.ToString(), param).ToList();
+            }
+            return mResult;
         }
     }
 }
