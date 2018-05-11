@@ -1,0 +1,106 @@
+﻿@model XiaoQingWa_Work_Model.Entity.TLineEntity
+
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form">
+        @Html.HiddenFor(m => m.LId, Model.LId)
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>流水线编码：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.LCode, Model.LCode, new { @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>名称：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.LName, Model.LName, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>全称：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.LFullName, Model.LFullName, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>类型：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.LType, Model.LType, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-7 col-sm-8 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="button" id="btnSave" onclick="member_add()" value="提交">
+            </div>
+        </div>
+    </form>
+</article>
+
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.skin-minimal input').iCheck({
+                checkboxClass: 'icheckbox-blue',
+                radioClass: 'iradio-blue',
+                increaseArea: '20%'
+            });
+
+            initValidator();
+        });
+        var validator;
+        function initValidator() {
+            validator = $("#form").validate({
+                rules: {
+                    LCode: {
+                        required: true,
+                        maxlength: 10
+                    },
+                    LName: {
+                        required: true,
+                        maxlength: 50
+                    },
+                    LFullName: {
+                        required: true,
+                        maxlength: 250
+                    },
+                    LType: {
+                        required: true,
+                        maxlength: 50
+                    }
+
+                },
+                onkeyup: function(element, event) {
+                    //去除左侧空格
+                    var value = this.elementValue(element).replace(/^\s+/g, "");
+                    $(element).val(value);
+                },
+                focusCleanup: true,
+                onfocusout: false,
+                onclick: false
+            });
+        }
+
+        /*用户-流水线*/
+        function member_add() {
+            if (!validator.form())
+                return false;
+        var url = '@Url.Action("CreateLine")';
+        var params = $('form').serializeArray();
+        $("#btnSave").attr('disabled', true);
+        $("#btnSave").val("保存中...");
+        $.post(url, params, function (data) {
+
+            if (data.Value == "success") {
+                layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
+                    layer_close();
+                });
+            } else {
+                $("#btnSave").removeAttr('disabled');
+                $("#btnSave").val("保存");
+                layer.msg(data.Text, { icon: 2, time: 1000 });
+            }
+        });
+        }
+    </script>
+}

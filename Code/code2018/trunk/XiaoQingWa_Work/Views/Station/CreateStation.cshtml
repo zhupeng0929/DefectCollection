@@ -1,0 +1,148 @@
+﻿@model XiaoQingWa_Work_Model.Entity.TStationEntity
+
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form">
+        @Html.HiddenFor(m => m.StationId, Model.StationId)
+        @Html.HiddenFor(m => m.LineName, Model.LineName)
+        @Html.HiddenFor(m => m.GoodBtnId, Model.GoodBtnId)
+        @Html.HiddenFor(m => m.BadBtnId, Model.BadBtnId)
+        @Html.HiddenFor(m => m.GoodLastTime, Model.GoodLastTime)
+        @Html.HiddenFor(m => m.BadLastTime, Model.BadLastTime)
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>工位编码：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.StationCode, Model.StationCode, new { @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>工位名称：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.StationName, Model.StationName, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>工位全称：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.StationFullName, Model.StationFullName, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2">流水线编码：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+
+                @Html.DropDownListFor(m => m.LineCode, @ViewBag.LineList as IEnumerable<SelectListItem>, new { type = "text", @class = "input-text", onchange = "OnChange();", @value = "", @placeholder = "" })
+
+                @* @Html.TextBoxFor(m => m.LineCode, Model.LineCode, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })*@
+            </div>
+        </div>
+        @*<div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2">流水线名称：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.LineName, Model.LineName, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>*@
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2">工位顺序索引：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.StationIndex, Model.StationIndex.ToString(), new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2">监控点位：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.JianKongPoint, Model.JianKongPoint, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+        @*<div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2">好件按钮硬件序列号：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.GoodBtnId, Model.GoodBtnId, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2">坏件按钮硬件序列号：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.BadBtnId, Model.BadBtnId, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>*@
+
+
+        <div class="row cl">
+            <div class="col-xs-7 col-sm-8 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="button" id="btnSave" onclick="member_add()" value="提交">
+            </div>
+        </div>
+    </form>
+</article>
+
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.skin-minimal input').iCheck({
+                checkboxClass: 'icheckbox-blue',
+                radioClass: 'iradio-blue',
+                increaseArea: '20%'
+            });
+
+            initValidator();
+        });
+        var validator;
+        function initValidator() {
+            validator = $("#form").validate({
+                rules: {
+                    StationCode	: {
+                        required: true,
+                        maxlength: 50
+                    },
+                    StationName: {
+                        required: true,
+                        maxlength: 50
+                    },
+                    StationFullName: {
+                        required: true,
+                        maxlength: 250
+                    }
+
+                },
+                onkeyup: function(element, event) {
+                    //去除左侧空格
+                    var value = this.elementValue(element).replace(/^\s+/g, "");
+                    $(element).val(value);
+                },
+                focusCleanup: true,
+                onfocusout: false,
+                onclick: false
+            });
+        }
+        function OnChange() {
+            $('#LineName').val($('#LineCode :selected').text());
+        }
+
+
+
+
+
+        /*用户-流水线*/
+        function member_add() {
+            if (!validator.form())
+                return false;
+        var url = '@Url.Action("CreateStation")';
+        var params = $('form').serializeArray();
+        $("#btnSave").attr('disabled', true);
+        $("#btnSave").val("保存中...");
+        $.post(url, params, function (data) {
+
+            if (data.Value == "success") {
+                layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
+                    layer_close();
+                });
+            } else {
+                $("#btnSave").removeAttr('disabled');
+                $("#btnSave").val("保存");
+                layer.msg(data.Text, { icon: 2, time: 1000 });
+            }
+        });
+        }
+    </script>
+}

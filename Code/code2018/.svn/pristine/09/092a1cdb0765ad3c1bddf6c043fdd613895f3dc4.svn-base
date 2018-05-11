@@ -1,0 +1,85 @@
+﻿@model List<XiaoQingWa_Work_Model.Entity.TWorkerEntity>
+@using XiaoQingWa_Work_Utility
+@using XiaoQingWa_Work_Model.Enum
+
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" name="" value=""></th>
+            <th width="80">ID</th>
+            <th width="100">工人姓名</th>
+            <th width="90">工人编号</th>
+            <th width="40">性别</th>
+            <th width="">备注描述</th>
+            <th width="150">流水线</th>
+            <th width="130">自动排序序号</th>
+            <th width="130">排序更新日期</th>
+            <th width="70">状态</th>
+            <th width="100">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr class="text-c">
+                    <td><input type="checkbox" value="@item.WId" name="Ids"></td>
+                    <td>@Html.DisplayFor(modelItem => item.WId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.WName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.WNo)</td>
+                    <td>@(EnumTypeHelper.GetDescriptionByValue<WorkerSex>(item.WSex ? 1 : 0))</td>
+                    <td>@Html.DisplayFor(modelItem => item.WDescript)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LineCode)</td>
+                    <td class="text-l">@Html.DisplayFor(modelItem => item.OrderIndex)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RefreshDate)</td>
+                    <td class="td-status">
+                        @if (item.Status == 1)
+                        {
+                            <span class="label radius">@(EnumTypeHelper.GetDescriptionByValue<WorkerStatu>(item.Status))</span>
+                        }
+                        else
+                        {
+                            <span class="label label-success radius">@(EnumTypeHelper.GetDescriptionByValue<WorkerStatu>(item.Status))</span>
+                        }
+                    </td>
+                    <td class="td-manage">
+
+                        @if (item.Status == 0)
+                        {
+                            <a style="text-decoration:none" onClick="member_stop(1,@item.WId)" href="javascript:;" title="请假/缺勤">
+                                <i class="Hui-iconfont">&#xe615;</i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a style="text-decoration:none" onClick="member_stop(0,@item.WId)" href="javascript:;" title="正常上班">
+                                <i class="Hui-iconfont">&#xe631;</i>
+                            </a>
+                        }
+
+                        <a title="编辑" href="javascript:;" onclick="layer_show('编辑','@Url.Action("CreateWorker")?workerid=@item.WId','','510')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+                        <a title="删除" href="javascript:;" onclick="member_del(@item.WId)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.table-sort').dataTable({
+                "aaSorting": [[1, "desc"]],//默认第几个排序
+                "bStateSave": true,//状态保存
+                "aoColumnDefs": [
+                    //{"bVisible": false, "aTargets": [ 1 ]}, //控制列的隐藏显示
+                    { "orderable": false, "aTargets": [0, 9, 10] }// 制定列不参与排序
+                ]
+            });
+        });
+
+    </script>
+
+}

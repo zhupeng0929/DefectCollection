@@ -1,0 +1,117 @@
+﻿@model IEnumerable<XiaoQingWa_Work_Model.Entity.TStationEntity>
+@using XiaoQingWa_Work_Utility
+@using XiaoQingWa_Work_Model.Enum
+
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" name="" value=""></th>
+            <th width="50">工位编码</th>
+            <th width="100">工位名称</th>
+            <th width="120">工位全称</th>
+            <th width="50">流水线编码</th>
+            <th width="50">流水线名称</th>
+
+            <th width="50">工位顺序索引</th>
+            <th width="100">监控点位</th>
+            <th width="100">好件按钮硬件序列号</th>
+            <th width="100">坏件按钮硬件序列号</th>
+            <th width="100">好件最近接收信号时间</th>
+            <th width="100">坏件最近接收信号时间</th>
+            <th width="50">工位状态</th>
+
+            <th width="50">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr class="text-c">
+                    <td><input type="checkbox" value="@item.StationId" name="Ids"></td>
+                    <td>@Html.DisplayFor(modelItem => item.StationCode)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StationName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StationFullName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LineCode)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LineName)</td>
+
+                    <td>@Html.DisplayFor(modelItem => item.StationIndex)</td>
+                    <td>@Html.DisplayFor(modelItem => item.JianKongPoint)</td>
+                    <td>
+                        @if (string.IsNullOrWhiteSpace(item.GoodBtnId))
+                        {
+                            <a title="绑定" href="javascript:;" onclick="layer_show('绑定设备','@Url.Action("BondCounter")?stationcode=@item.StationCode&type=0','450','260')" class="ml-5" style="text-decoration:none">
+                                <i class="Hui-iconfont">&#xe6f1;</i>
+                            </a>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.GoodBtnId)
+                            <a title="解绑" href="javascript:;" onclick="unbind(@item.StationId,'@item.GoodBtnId',0)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe605;</i></a>
+                        }
+
+                    </td>
+                    <td>
+                        @if (string.IsNullOrWhiteSpace(item.BadBtnId))
+                        {
+                            <a title="绑定" href="javascript:;" onclick="layer_show('绑定设备','@Url.Action("BondCounter")?stationcode=@item.StationCode&type=1','450','260')" class="ml-5" style="text-decoration:none">
+                                <i class="Hui-iconfont">&#xe6f1;</i>
+                            </a>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.BadBtnId)
+                            <a title="解绑" href="javascript:;" onclick="unbind(@item.StationId,'@item.BadBtnId',1)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe605;</i></a>
+                        }
+                    </td>
+                    <td>@(item.GoodLastTime == new DateTime(1900, 01, 01) ? "" : item.GoodLastTime.ToString())</td>
+                    <td>@(item.BadLastTime == new DateTime(1900, 01, 01) ? "" : item.BadLastTime.ToString())</td>
+                    <td class="td-status">
+                        @if (item.Status == 1)
+                        {
+                            <span class="label radius">@(EnumTypeHelper.GetDescriptionByValue<StationStatu>(item.Status))</span>
+                        }
+                        else
+                        {
+                            <span class="label label-success radius">@(EnumTypeHelper.GetDescriptionByValue<StationStatu>(item.Status))</span>
+                        }
+                    </td>
+                    <td class="td-manage">
+                        @if (item.Status == 1)
+                        {
+                            <a style="text-decoration:none" onClick="member_stop(0,@item.StationId)" href="javascript:;" title="启用">
+                                <i class="Hui-iconfont">&#xe615;</i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a style="text-decoration:none" onClick="member_stop(1,@item.StationId)" href="javascript:;" title="停用">
+                                <i class="Hui-iconfont">&#xe631;</i>
+                            </a>
+                        }
+                        <a title="编辑" href="javascript:;" onclick="layer_show('编辑','@Url.Action("CreateStation")?stationcode=@item.StationCode','750','460')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+                        <a title="删除" href="javascript:;" onclick="member_del(@item.StationId)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                    </td>
+                </tr>
+            }
+        }
+        
+    </tbody>
+</table>
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.table-sort').dataTable({
+                "aaSorting": [[1, "desc"]],//默认第几个排序
+                "bStateSave": true,//状态保存
+                "aoColumnDefs": [
+                    //{"bVisible": false, "aTargets": [ 1 ]}, //控制列的隐藏显示
+                    { "orderable": false, "aTargets": [0, 12, 13] }// 制定列不参与排序
+                ]
+            });
+        });
+
+    </script>
+
+}

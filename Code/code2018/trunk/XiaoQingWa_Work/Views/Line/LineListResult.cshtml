@@ -1,0 +1,61 @@
+﻿@model IEnumerable<XiaoQingWa_Work_Model.Entity.TLineEntity>
+@using XiaoQingWa_Work_Utility
+@using XiaoQingWa_Work_Model.Enum
+
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" name="" value=""></th>
+            <th width="80">流水线编码</th>
+            <th width="100">名称</th>
+            <th width="100">全称</th>
+            <th width="90">类型</th>
+            <th width="50">工位数量</th>
+            <th width="100">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr class="text-c">
+                    <td><input type="checkbox" value="@item.LId" name="Ids"></td>
+                    <td>@Html.DisplayFor(modelItem => item.LCode)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LFullName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LType)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StationCount)</td>
+                    <td class="td-manage">
+                        <a title="编辑" href="javascript:;" onclick="layer_show('编辑','@Url.Action("CreateLine")?linecode=@item.LId','500','360')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+                        <a title="删除" href="javascript:;" onclick="member_del(@item.LId)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan='8'>
+                    <span style='color: #FF8C40'>暂无数据显示</span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.table-sort').dataTable({
+                "aaSorting": [[1, "desc"]],//默认第几个排序
+                "bStateSave": true,//状态保存
+                "aoColumnDefs": [
+                    //{"bVisible": false, "aTargets": [ 1 ]}, //控制列的隐藏显示
+                    { "orderable": false, "aTargets": [0,5, 6] }// 制定列不参与排序
+                ]
+            });
+        });
+
+    </script>
+
+}
