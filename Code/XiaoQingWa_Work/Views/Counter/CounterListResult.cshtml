@@ -31,7 +31,7 @@
                         }
                     </td>
                     <td class="td-manage">
-                        @if (item.Status == 0)
+                        @*@if (item.Status == 0)
                         {
                             <a style="text-decoration:none" onClick="member_stop(1,@item.CId)" href="javascript:;" title="启用">
                                 <i class="Hui-iconfont">&#xe615;</i>
@@ -42,7 +42,7 @@
                             <a style="text-decoration:none" onClick="member_stop(0,@item.CId)" href="javascript:;" title="停用">
                                 <i class="Hui-iconfont">&#xe631;</i>
                             </a>
-                        }
+                        }*@
                         <a title="编辑" href="javascript:;" onclick="layer_show('编辑','@Url.Action("CreateCounter")?cid=@item.CId','450','200')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
                         <a title="删除" href="javascript:;" onclick="member_del(@item.CId)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
                     </td>

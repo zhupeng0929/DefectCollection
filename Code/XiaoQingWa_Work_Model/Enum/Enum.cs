@@ -46,7 +46,20 @@ namespace XiaoQingWa_Work_Model.Enum
         [Description("保密")]
         S = 3,
     }
+    public enum WorkerSex
+    {
+        /// <summary>
+        /// 男
+        /// </summary>
+        [Description("男")]
+        M = 0,
 
+        /// <summary>
+        /// 女
+        /// </summary>
+        [Description("女")]
+        W = 1,
+    }
    public enum StationStatu
     {
         /// <summary>
@@ -75,5 +88,20 @@ namespace XiaoQingWa_Work_Model.Enum
         /// </summary>
         [Description("启用")]
         Enable = 1
+    }
+
+    public enum WorkerStatu
+    {
+        /// <summary>
+        /// 正常上班
+        /// </summary>
+        [Description("正常上班")]
+        Common = 0,
+
+        /// <summary>
+        /// 请假或缺勤
+        /// </summary>
+        [Description("请假或缺勤")]
+        Leave = 1
     }
 }

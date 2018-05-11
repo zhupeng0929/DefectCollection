@@ -74,9 +74,21 @@ namespace XiaoQingWa_Work.Controllers
         public ActionResult DeleteCounter(int id)
         {
             var result = false;
+            ReturnJsonMessage msg = new ReturnJsonMessage();
+
+            var model = tCounterRepository.GetSingle(id);
+            if (model.Status==1)
+            {
+                msg.Text =  "已启用设备，请先解除绑定";
+                msg.Value =  "error";
+
+                return Json(msg);
+            }
+
+
             result = tCounterRepository.DelTCounter(id);
 
-            ReturnJsonMessage msg = new ReturnJsonMessage();
+           
 
             msg.Text = result ? "删除成功" : "删除失败";
             msg.Value = result ? "success" : "error";
@@ -91,6 +103,18 @@ namespace XiaoQingWa_Work.Controllers
             ReturnJsonMessage msg = new ReturnJsonMessage();
             if (ids.Length > 0)
             {
+                foreach (var id in ids)
+                {
+                    var model = tCounterRepository.GetSingle(id);
+                    if (model.Status == 1)
+                    {
+                        msg.Text = "已启用设备，请先解除绑定";
+                        msg.Value = "error";
+
+                        return Json(msg);
+                    }
+                }
+
                 result = tCounterRepository.DelTCounterBatch(ids);
             }
 

@@ -13,5 +13,8 @@ namespace XiaoQingWa_Work_IDAL
         List<TWorkerEntity> GetTWorkerList();
         bool UpdateTWorker(TWorkerEntity entity);
         bool UpdateTWorker(TWorkerEntity entity, IDbConnection conn, IDbTransaction trans);
+        List<TWorkerEntity> GetWorkerInfoListByQueryModel(WorkerQuery workerQuery);
+        List<TWorkerEntity> GetTTaskWorkerListByLineCode(string linecode);
+        bool UpdateWorkerStatu(int id, int state);
     }
 }

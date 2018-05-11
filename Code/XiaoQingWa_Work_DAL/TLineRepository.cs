@@ -148,7 +148,7 @@ namespace XiaoQingWa_Work_DAL
                 //{
                 //    strSql.Append(" and  CreateDate<@datemax ");
                 //}
-                if (!string.IsNullOrWhiteSpace(lineQuery.keyWords))
+                if (!string.IsNullOrWhiteSpace(lineQuery.keyWords.Trim()))
                 {
                     strSql.Append(" and  (LCode=@keyWords or LName=@keyWords or LFullName=@keyWords or LType=@keyWords) ");
                 }
@@ -156,7 +156,7 @@ namespace XiaoQingWa_Work_DAL
                 {
                     //datemin = userQuery.datemin,
                     //datemax = userQuery.datemax,
-                    keyWords = lineQuery.keyWords
+                    keyWords = lineQuery.keyWords.Trim()
                 };
 
                 mResult = conn.Query<TLineEntity>(strSql.ToString(), param).ToList();

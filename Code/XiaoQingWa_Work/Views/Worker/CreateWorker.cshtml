@@ -1,31 +1,48 @@
-﻿@model XiaoQingWa_Work_Model.Entity.TLineEntity
+﻿@model XiaoQingWa_Work_Model.Entity.TWorkerEntity
 
 <article class="page-container">
     <form action="" method="post" class="form form-horizontal" id="form">
-        @Html.HiddenFor(m => m.LId, Model.LId)
+        @Html.HiddenFor(m => m.WId, Model.WId)
         <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>流水线编码：</label>
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>用户名：</label>
             <div class="formControls col-xs-7 col-sm-8">
-                @Html.TextBoxFor(m => m.LCode, Model.LCode, new { @class = "input-text", @value = "", @placeholder = "" })
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>名称：</label>
-            <div class="formControls col-xs-7 col-sm-8">
-                @Html.TextBoxFor(m => m.LName, Model.LName, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>全称：</label>
-            <div class="formControls col-xs-7 col-sm-8">
-                @Html.TextBoxFor(m => m.LFullName, Model.LFullName, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+                @Html.TextBoxFor(m => m.WName, Model.WName, new { @class = "input-text", @value = "", @placeholder = "" })
             </div>
         </div>
 
         <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>类型：</label>
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>工人编号：</label>
             <div class="formControls col-xs-7 col-sm-8">
-                @Html.TextBoxFor(m => m.LType, Model.LType, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+                @Html.TextBoxFor(m => m.WNo, Model.WNo, new { @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2"><span class="c-red">*</span>性别：</label>
+            <div class="formControls col-xs-7 col-sm-8 skin-minimal">
+                <div class="radio-box">
+
+                    @Html.RadioButtonFor(m => m.WSex, false, new { id = "sex-1" })
+                    <label for="sex-1">男</label>
+                </div>
+                <div class="radio-box">
+
+                    @Html.RadioButtonFor(m => m.WSex, true, new { id = "sex-2" })
+                    <label for="sex-2">女</label>
+                </div>
+
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2">备注描述：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.TextBoxFor(m => m.WDescript, Model.WDescript, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-2">流水线：</label>
+            <div class="formControls col-xs-7 col-sm-8">
+                @Html.DropDownListFor(m => m.LineCode, @ViewBag.LineList as IEnumerable<SelectListItem>, new { type = "text", @class = "input-text", onchange = "OnChange();", @value = "", @placeholder = "" })
             </div>
         </div>
 
@@ -52,25 +69,20 @@
         function initValidator() {
             validator = $("#form").validate({
                 rules: {
-                    LCode: {
-                        required: true,
-                        maxlength: 10
-                    },
-                    LName: {
+                    WName: {
                         required: true,
                         maxlength: 50
                     },
-                    LFullName: {
+                    WNo: {
                         required: true,
-                        maxlength: 250
+                        maxlength: 50,
                     },
-                    LType: {
+                    WSex: {
                         required: true,
-                        maxlength: 50
                     }
 
                 },
-                onkeyup: function(element, event) {
+                onkeyup: function (element, event) {
                     //去除左侧空格
                     var value = this.elementValue(element).replace(/^\s+/g, "");
                     $(element).val(value);
@@ -81,11 +93,11 @@
             });
         }
 
-        /*用户-流水线*/
+        /*用户-添加*/
         function member_add() {
             if (!validator.form())
                 return false;
-        var url = '@Url.Action("CreateLine")';
+        var url = '@Url.Action("CreateWorker")';
         var params = $('form').serializeArray();
         $("#btnSave").attr('disabled', true);
         $("#btnSave").val("保存中...");

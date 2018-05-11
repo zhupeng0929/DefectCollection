@@ -106,10 +106,21 @@ namespace XiaoQingWa_Work.Controllers
         public ActionResult DeleteStation(int id)
         {
             var result = false;
-            result = tStationRepository.DelTStation(id);
+           
 
             ReturnJsonMessage msg = new ReturnJsonMessage();
+            var model = tStationRepository.GetTStation(id);
 
+            if (model != null && (!string.IsNullOrWhiteSpace(model.GoodBtnId) || !string.IsNullOrWhiteSpace(model.BadBtnId)))
+            {
+                msg.Text = "请先解绑设备后再进行删除";
+                msg.Value = msg.Value = "error";
+                return Json(msg);
+            }
+            else
+            {
+                result = tStationRepository.DelTStation(id);
+            }
             msg.Text = result ? "删除成功" : "删除失败";
             msg.Value = result ? "success" : "error";
 
@@ -123,6 +134,16 @@ namespace XiaoQingWa_Work.Controllers
             ReturnJsonMessage msg = new ReturnJsonMessage();
             if (ids.Length > 0)
             {
+                foreach (var id in ids)
+                {
+                    var model = tStationRepository.GetTStation(id);
+                    if (model != null && (!string.IsNullOrWhiteSpace(model.GoodBtnId) || !string.IsNullOrWhiteSpace(model.BadBtnId)))
+                    {
+                        msg.Text = "请先解绑设备后再进行删除";
+                        msg.Value = msg.Value = "error";
+                        return Json(msg);
+                    }
+                }
                 result = tStationRepository.DelTStationBatch(ids);
             }
 
@@ -179,17 +200,17 @@ namespace XiaoQingWa_Work.Controllers
                 msg.Value = "error";
                 return Json(msg);
             }
-            result=tStationRepository.BondCounter(StationId, GoodBtnId, BadBtnId, type);
+            result = tStationRepository.BondCounter(StationId, GoodBtnId, BadBtnId, type);
             msg.Text = result ? "绑定成功" : "绑定失败";
             msg.Value = result ? "success" : "error";
             return Json(msg);
         }
         [HttpPost]
-        public ActionResult UnBindStation(int id,string code,int type)
+        public ActionResult UnBindStation(int id, string code, int type)
         {
             ReturnJsonMessage msg = new ReturnJsonMessage();
             var result = false;
-            
+
             result = tStationRepository.UnBindStation(id, code, type);
             msg.Text = result ? "解绑成功" : "解绑失败";
             msg.Value = result ? "success" : "error";

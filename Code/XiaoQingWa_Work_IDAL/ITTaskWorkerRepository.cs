@@ -13,5 +13,6 @@ namespace XiaoQingWa_Work_IDAL
         List<TTaskWorkerEntity> GetTTaskWorkerList();
         bool UpdateTTaskWorker(TTaskWorkerEntity entity);
         bool UpdateTTaskWorker(TTaskWorkerEntity entity, IDbConnection conn, IDbTransaction trans);
+
     }
 }

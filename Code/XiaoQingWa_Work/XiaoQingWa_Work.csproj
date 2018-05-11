@@ -175,6 +175,7 @@
     <Compile Include="Controllers\StationController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\WorkerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1326,6 +1327,9 @@
     <Content Include="Views\Counter\CounterList.cshtml" />
     <Content Include="Views\Counter\CounterListResult.cshtml" />
     <Content Include="Views\Station\BondCounter.cshtml" />
+    <Content Include="Views\Worker\WorkerListResult.cshtml" />
+    <Content Include="Views\Worker\CreateWorker.cshtml" />
+    <Content Include="Views\Worker\WorkerList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

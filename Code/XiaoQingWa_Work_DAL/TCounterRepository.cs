@@ -152,13 +152,13 @@ namespace XiaoQingWa_Work_DAL
             {
                 StringBuilder strSql = new StringBuilder(" Select * from tCounter   where 1=1 ");
 
-                if (!string.IsNullOrWhiteSpace(CountNo))
+                if (!string.IsNullOrWhiteSpace(CountNo.Trim()))
                 {
                     strSql.Append(" and CountNo=@keyWords ");
                 }
                 var param = new
                 {
-                    keyWords = CountNo
+                    keyWords = CountNo.Trim()
                 };
 
                 mResult = conn.Query<TCounterEntity>(strSql.ToString(), param).ToList();

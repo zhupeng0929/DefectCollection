@@ -110,7 +110,11 @@
 
 
                 },
-                onkeyup: false,
+                onkeyup:  function(element, event) {
+                    //去除左侧空格
+                    var value = this.elementValue(element).replace(/^\s+/g, "");
+                    $(element).val(value);
+                },
                 focusCleanup: true,
                 onfocusout: false,
                 onclick: false

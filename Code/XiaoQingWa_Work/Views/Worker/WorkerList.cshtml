@@ -1,0 +1,151 @@
+﻿@using XiaoQingWa_Work_Utility
+@using XiaoQingWa_Work_Model.Enum
+@{
+    ViewBag.Title = "WorkerList";
+}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont">&#xe67f;</i>
+    首页 <span class="c-gray en">&gt;</span>
+    用户中心 <span class="c-gray en">&gt;</span>
+    用户管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="Hui-iconfont">&#xe68f;</i>
+    </a>
+</nav>
+<div class="page-container">
+    <form action="UserList" method="post" class="form form-horizontal" id="form">
+        <div class="text-l">
+            @*日期范围：
+            <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" name="datemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" name="datemax" class="input-text Wdate" style="width:120px;">*@
+            <input type="text" class="input-text" style="width:250px" placeholder="输入员工姓名、编号" id="keyWords" name="keyWords">
+            <button type="button" class="btn btn-success radius" id="searchBtn" name="" onclick="Search()"><i class="Hui-iconfont">&#xe665;</i> 搜员工</button>
+        </div>
+    </form>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+        <span class="l">
+            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+            <a href="javascript:;" onclick="layer_show('添加员工','@Url.Action("CreateWorker")','','510')" class="btn btn-primary radius">
+                <i class="Hui-iconfont">&#xe600;</i> 添加员工
+            </a>
+        </span>
+
+    </div>
+    <div class="mt-20" id="resultList">
+
+    </div>
+</div>
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            
+            Search();
+        });
+        /*停用*/
+        function member_stop(statu, id) {
+            var op = statu == 0 ? "确认正常上班？" : "确认请假或缺勤？";
+            layer.confirm(op, function (index) {
+                var params = {
+                    id: id,
+                    statu: statu
+                };
+                var url = '@Url.Action("UpdateWorkerStatu")';
+                $.post(url, params, function (data) {
+                    if (data.Value == "success") {
+                        layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
+                            location.replace(location.href);
+                        });
+                    } else {
+                        layer.msg(data.Text, { icon: 2, time: 1000 });
+                    }
+                });
+            });
+        }
+
+        /*启用*/
+        function member_start(obj, id) {
+            layer.confirm('确认要启用吗？', function (index) {
+                $.ajax({
+                    type: 'POST',
+                    url: '',
+                    dataType: 'json',
+                    success: function (data) {
+                        $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
+                        $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+                        $(obj).remove();
+                        layer.msg('已启用!', { icon: 6, time: 1000 });
+                    },
+                    error: function (data) {
+                        console.log(data.msg);
+                    },
+                });
+            });
+        }
+        /*编辑*/
+        function member_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+       
+        /*删除*/
+        function member_del(id) {
+            layer.confirm('确认要删除吗？', function (index) {
+                var params = {
+                    id: id
+                };
+                var url = '@Url.Action("DeleteWorker")';
+                $.post(url, params, function (data) {
+                    if (data.Value == "success") {
+                        layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
+                            location.replace(location.href);
+                        });
+                    } else {
+                        layer.msg(data.Text, { icon: 2, time: 1000 });
+                    }
+                });
+            });
+        }
+        function datadel() {
+
+            var idList = [];
+            var rows = $("input[name='Ids']:checked");
+            if (rows) {
+                $.each(rows, function (index, item) {
+                    var vl = $(item).val();
+                    idList.push(vl);
+                });
+            }
+            if (rows.length == 0) {
+                $.alert({ content: "请至少选择一行" });
+                return false;
+            }
+            layer.confirm('确认要删除吗？', function (index) {
+                var params = {
+                    ids: idList
+                };
+                var url = '@Url.Action("DeleteWorkerBatch")';
+                $.post(url, params, function (data) {
+                    if (data.Value == "success") {
+                        layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
+                            location.replace(location.href);
+                        });
+                    } else {
+                        layer.msg(data.Text, { icon: 2, time: 1000 });
+                    }
+                });
+            });
+        }
+
+        function Search() {
+            var params = $("form").serialize();
+            var url = '@Url.Action("WorkerListResult", "Worker")';
+            $("#searchBtn").attr("disabled", "disabled");
+            $.post(url, params, function (data) {
+                $("#resultList").html(data);
+                $("#searchBtn").removeAttr("disabled");
+            });
+        }
+    </script>
+
+}
+
+

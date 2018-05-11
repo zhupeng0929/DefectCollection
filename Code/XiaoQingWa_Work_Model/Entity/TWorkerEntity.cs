@@ -126,4 +126,11 @@ namespace XiaoQingWa_Work_Model.Entity
             set { _refreshDate = value; }
         }
     }
+
+    public class WorkerQuery
+    {
+        public DateTime? datemin { get; set; }
+        public DateTime? datemax { get; set; }
+        public string keyWords { get; set; }
+    }
 }

@@ -143,5 +143,74 @@ namespace XiaoQingWa_Work_DAL
             row = conn.Update(entity, trans);
             return row > 0;
         }
+
+        public List<TWorkerEntity> GetWorkerInfoListByQueryModel(WorkerQuery workerQuery)
+        {
+            var mResult = new List<TWorkerEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                StringBuilder strSql = new StringBuilder("Select * from tWorker  where 1=1 ");
+
+
+                if (!string.IsNullOrWhiteSpace(workerQuery.keyWords.Trim()))
+                {
+                    strSql.Append(" and  (WName=@keyWords or WNo=@keyWords or WDescript = @keyWords) ");
+                }
+                var param = new
+                {
+                    keyWords = workerQuery.keyWords.Trim()
+                };
+
+                mResult = conn.Query<TWorkerEntity>(strSql.ToString(), param).ToList();
+            }
+            return mResult;
+        }
+        /// <summary>
+        /// 根据流水线获取员工
+        /// </summary>
+        /// <param name="linecode"></param>
+        /// <returns></returns>
+        public List<TWorkerEntity> GetTTaskWorkerListByLineCode(string linecode)
+        {
+            var mResult = new List<TWorkerEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                if (!string.IsNullOrWhiteSpace(linecode))
+                {
+                    StringBuilder strSql = new StringBuilder("Select * from tWorker  where 1=1 ");
+
+                    strSql.Append(" and  LineCode=@LineCode ");
+
+                    var param = new
+                    {
+                        LineCode = linecode
+                    };
+
+                    mResult = conn.Query<TWorkerEntity>(strSql.ToString(), param).ToList();
+                }
+            }
+            return mResult;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public bool UpdateWorkerStatu(int id, int state)
+        {
+            if (id > 0)
+            {
+                using (IDbConnection conn = new SqlConnection(GetConnstr))
+                {
+                    string strSql = "update  tWorker  set Status=@Status where WId	=@WId	";
+                    var param = new { WId = id, Status = state };
+                    var result = conn.Execute(strSql, param);
+                    if (result > 0)
+                        return true;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -145,5 +145,8 @@ namespace XiaoQingWa_Work_DAL
             row = conn.Update(entity, trans);
             return row > 0;
         }
+
+
+
     }
 }

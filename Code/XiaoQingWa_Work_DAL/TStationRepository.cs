@@ -63,6 +63,7 @@ namespace XiaoQingWa_Work_DAL
         {
             if (id > 0)
             {
+                var model = GetTStation(id);
                 using (IDbConnection conn = new SqlConnection(GetConnstr))
                 {
                     conn.Open();
@@ -73,7 +74,6 @@ namespace XiaoQingWa_Work_DAL
                             string strSql = "delete from TStation where StationId=@StationId";
                             var param = new { StationId = id };
 
-                            var model = GetTStation(id);
                             if (model != null && (!string.IsNullOrWhiteSpace(model.GoodBtnId) || !string.IsNullOrWhiteSpace(model.BadBtnId)))
                             {
                                 string strSql3 = "update  tCounter   set Status=0 where CountNo=@GoodBtnId or CountNo=@BadBtnId";
@@ -125,7 +125,7 @@ namespace XiaoQingWa_Work_DAL
                                 if (model != null && (!string.IsNullOrWhiteSpace(model.GoodBtnId) || !string.IsNullOrWhiteSpace(model.BadBtnId)))
                                 {
                                     string strSql3 = "update  tCounter   set Status=0 where CountNo=@GoodBtnId or CountNo=@BadBtnId";
-                                    var param3 = new { GoodBtnId=model.GoodBtnId??"", BadBtnId=model.BadBtnId??"" };
+                                    var param3 = new { GoodBtnId = model.GoodBtnId ?? "", BadBtnId = model.BadBtnId ?? "" };
                                     conn.Execute(strSql3, param3, trans);
                                 }
                             }
@@ -145,7 +145,7 @@ namespace XiaoQingWa_Work_DAL
                                 return false;
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             trans.Rollback();
                             return false;
@@ -236,13 +236,13 @@ namespace XiaoQingWa_Work_DAL
             {
                 StringBuilder strSql = new StringBuilder("Select * from tStation  where 1=1 ");
 
-                if (!string.IsNullOrWhiteSpace(lineQuery.keyWords))
+                if (!string.IsNullOrWhiteSpace(lineQuery.keyWords.Trim()))
                 {
                     strSql.Append(" and  (StationCode=@keyWords or StationName=@keyWords or StationFullName=@keyWords or LineCode=@keyWords or LineName=@keyWords) ");
                 }
                 var param = new
                 {
-                    keyWords = lineQuery.keyWords
+                    keyWords = lineQuery.keyWords.Trim()
                 };
 
                 mResult = conn.Query<TStationEntity>(strSql.ToString(), param).ToList();
