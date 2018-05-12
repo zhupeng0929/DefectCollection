@@ -1,0 +1,93 @@
+﻿@model List<XiaoQingWa_Work_Model.Entity.TRecordDetailEntity>
+@using XiaoQingWa_Work_Utility
+@using XiaoQingWa_Work_Model.Enum
+
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" name="" value=""></th>
+            <th width="80">ID</th>
+            <th width="100">任务单编号</th>
+            <th width="100">任务单名称</th>
+            <th width="100">流水线单编号</th>
+            <th width="100">流水线名称</th>
+            <th width="80">工位编号</th>
+            <th width="80">工位名称</th>
+            <th width="80">员工编号</th>
+            <th width="80">员工名称</th>
+            <th width="80">计数类型</th>
+            <th width="40">数量</th>
+            <th width="100">计数器编号</th>
+            <th width="130">计数器发送时间</th>
+            <th width="50">状态</th>
+            <th width="50">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+        <tr class="text-c">
+            <td><input type="checkbox" value="@item.RId" name="Ids"></td>
+            <td>@Html.DisplayFor(modelItem => item.RId)</td>
+            <td>@Html.DisplayFor(modelItem => item.BillNO)</td>
+            <td>@Html.DisplayFor(modelItem => item.TName)</td>
+            <td>@Html.DisplayFor(modelItem => item.LineCode)</td>
+            <td>@Html.DisplayFor(modelItem => item.LineName)</td>
+            <td>@Html.DisplayFor(modelItem => item.StationCode)</td>
+            <td>@Html.DisplayFor(modelItem => item.StationName)</td>
+            <td>@Html.DisplayFor(modelItem => item.WId)</td>
+            <td>@Html.DisplayFor(modelItem => item.WName)</td>
+            <td>@Html.DisplayFor(modelItem => item.CountType)</td>
+            <td>@Html.DisplayFor(modelItem => item.Count)</td>
+            <td>@Html.DisplayFor(modelItem => item.BtnId)</td>
+            <td>@Html.DisplayFor(modelItem => item.ReceiveTime)</td>
+            <td class="td-status">
+                @if (item.Status == 1)
+                {
+                    <span class="label radius">@(EnumTypeHelper.GetDescriptionByValue<RecordStatu>(item.Status))</span>
+                }
+                else
+                {
+                    <span class="label label-success radius">@(EnumTypeHelper.GetDescriptionByValue<RecordStatu>(item.Status))</span>
+                }
+            </td>
+            <td class="td-manage">
+
+                @if (item.Status == 0)
+                {
+                    <a style="text-decoration:none" onClick="member_stop(1,@item.WId)" href="javascript:;" title="设为无效">
+                        <i class="Hui-iconfont">&#xe615;</i>
+                    </a>
+                }
+                else
+                {
+                    <a style="text-decoration:none" onClick="member_stop(0,@item.WId)" href="javascript:;" title="设为有效">
+                        <i class="Hui-iconfont">&#xe631;</i>
+                    </a>
+                }
+
+            </td>
+        </tr>
+            }
+        }
+
+    </tbody>
+</table>
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.table-sort').dataTable({
+                "aaSorting": [[1, "desc"]],//默认第几个排序
+                "bStateSave": true,//状态保存
+                "aoColumnDefs": [
+                    //{"bVisible": false, "aTargets": [ 1 ]}, //控制列的隐藏显示
+                    { "orderable": false, "aTargets": [0, 14, 15] }// 制定列不参与排序
+                ]
+            });
+        });
+
+    </script>
+
+}

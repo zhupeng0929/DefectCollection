@@ -171,6 +171,7 @@
     <Compile Include="Controllers\CounterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LineController.cs" />
+    <Compile Include="Controllers\RecordDetailController.cs" />
     <Compile Include="Controllers\StationController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -1325,6 +1326,8 @@
     <Content Include="Views\Worker\WorkerListResult.cshtml" />
     <Content Include="Views\Worker\CreateWorker.cshtml" />
     <Content Include="Views\Worker\WorkerList.cshtml" />
+    <Content Include="Views\RecordDetail\RecordDetailList.cshtml" />
+    <Content Include="Views\RecordDetail\RecordDetailResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

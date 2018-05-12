@@ -13,5 +13,6 @@ namespace XiaoQingWa_Work_IDAL
         List<TRecordDetailEntity> GetTRecordDetailList();
         bool UpdateTRecordDetail(TRecordDetailEntity entity);
         bool UpdateTRecordDetail(TRecordDetailEntity entity, IDbConnection conn, IDbTransaction trans);
+        List<TRecordDetailEntity> GetRecordDetailListByQueryModel(TRecordDetailEntity recordDetailQuery);
     }
 }

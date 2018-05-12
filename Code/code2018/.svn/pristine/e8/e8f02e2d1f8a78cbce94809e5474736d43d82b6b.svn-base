@@ -4,9 +4,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //---------------------------------------------------------------------------------
-// <copyright company="XiaoQingWa" file="tRecordDetailRespository.cs" >
+// <copyright company="XiaoQingWa" file="tLineRespository.cs" >
 //      Author: Peng.Zhu
-//      Create Time: 2018/5/5 20:59:35
+//      Create Time: 2018/5/5 20:56:43
 //      Description: 
 // </copyright>
 //---------------------------------------------------------------------------------
@@ -25,14 +25,14 @@ using XiaoQingWa_Work_Model.Entity;
 namespace XiaoQingWa_Work_DAL
 {
     /// <summary>
-    /// TRecordDetailDAL数据访问类
+    /// TLineDAL数据访问类
     /// </summary>
-    public partial class TRecordDetailRepository : BaseRepository<TRecordDetailEntity>, ITRecordDetailRepository
+    public partial class TLineRepository : BaseRepository<TLineEntity>, ITLineRepository
     {
         /// <summary>
         /// 新增实体
         /// </summary>
-        public bool AddTRecordDetail(TRecordDetailEntity model)
+        public bool AddTLine(TLineEntity model)
         {
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
@@ -45,7 +45,7 @@ namespace XiaoQingWa_Work_DAL
         /// <summary>
         /// 新增实体--事物
         /// </summary>
-        public bool AddTRecordDetail(TRecordDetailEntity model, IDbConnection conn, IDbTransaction trans)
+        public bool AddTLine(TLineEntity model, IDbConnection conn, IDbTransaction trans)
         {
             var result = conn.Insert<int>(model, trans);
             if (result > 0)
@@ -58,14 +58,14 @@ namespace XiaoQingWa_Work_DAL
         /// </summary>
         /// <param name="id">主键id</param>
         /// <returns></returns>
-        public bool DelTRecordDetail(int id)
+        public bool DelTLine(int id)
         {
             if (id > 0)
             {
                 using (IDbConnection conn = new SqlConnection(GetConnstr))
                 {
-                    string strSql = "delete from TRecordDetail where RId=@RId";
-                    var param = new { RId = id };
+                    string strSql = "delete from TLine where LId=@LId";
+                    var param = new { LId = id };
                     var result = conn.Execute(strSql, param);
                     if (result > 0)
                         return true;
@@ -78,16 +78,16 @@ namespace XiaoQingWa_Work_DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DelTRecordDetailBatch(int[] ids)
+        public bool DelTLineBatch(int[] ids)
         {
             if (ids.Length > 0)
             {
                 using (IDbConnection conn = new SqlConnection(GetConnstr))
                 {
-                    string strSql = "delete from  TRecordDetail where RId in @RId ";
+                    string strSql = "delete from  TLine where LId in @LId ";
 
                     DynamicParameters param = new DynamicParameters();
-                    param.Add("RId", ids);
+                    param.Add("LId", ids);
                     var result = conn.Execute(strSql, param);
                     if (result > 0)
                         return true;
@@ -99,25 +99,12 @@ namespace XiaoQingWa_Work_DAL
         /// 获取类别实体根据ID
         /// </summary>
         /// <returns></returns>
-        public TRecordDetailEntity GetTRecordDetail(int id)
+        public TLineEntity GetTLine(int id)
         {
-            var mResult = new TRecordDetailEntity();
+            var mResult = new TLineEntity();
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                mResult = conn.Get<TRecordDetailEntity>(id);
-            }
-            return mResult;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public List<TRecordDetailEntity> GetTRecordDetailList()
-        {
-            var mResult = new List<TRecordDetailEntity>();
-            using (IDbConnection conn = new SqlConnection(GetConnstr))
-            {
-                mResult = conn.GetList<TRecordDetailEntity>().ToList();
+                mResult = conn.Get<TLineEntity>(id);
             }
             return mResult;
         }
@@ -125,7 +112,7 @@ namespace XiaoQingWa_Work_DAL
         /// 更新实体列表
         /// </summary>
         /// <returns></returns>
-        public bool UpdateTRecordDetail(TRecordDetailEntity entity)
+        public bool UpdateTLine(TLineEntity entity)
         {
             int row;
             using (IDbConnection conn = new SqlConnection(GetConnstr))
@@ -138,7 +125,7 @@ namespace XiaoQingWa_Work_DAL
         /// 更新实体列表--事物
         /// </summary>
         /// <returns></returns>
-        public bool UpdateTRecordDetail(TRecordDetailEntity entity, IDbConnection conn, IDbTransaction trans)
+        public bool UpdateTLine(TLineEntity entity, IDbConnection conn, IDbTransaction trans)
         {
             int row;
             row = conn.Update(entity, trans);
@@ -146,38 +133,34 @@ namespace XiaoQingWa_Work_DAL
         }
 
 
-        public List<TRecordDetailEntity> GetRecordDetailListByQueryModel(TRecordDetailEntity recordDetailQuery)
+        public List<TLineEntity> GetLineInfoListByQueryModel(LineQuery lineQuery)
         {
-            var mResult = new List<TRecordDetailEntity>();
+            var mResult = new List<TLineEntity>();
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                StringBuilder strSql = new StringBuilder("Select * from tRecordDetail   where 1=1 ");
+                StringBuilder strSql = new StringBuilder("Select * from tLine where 1=1 ");
 
-                if (!string.IsNullOrWhiteSpace(recordDetailQuery.BillNO))
+                //if (userQuery.datemin != null && userQuery.datemin != new DateTime(1900, 1, 1))
+                //{
+                //    strSql.Append(" and  CreateDate>=@datemin ");
+                //}
+                //if (userQuery.datemax != null && userQuery.datemax != new DateTime(1900, 1, 1))
+                //{
+                //    strSql.Append(" and  CreateDate<@datemax ");
+                //}
+
+                if (!string.IsNullOrWhiteSpace(lineQuery.keyWords))
                 {
-                    strSql.Append(" and BillNO=@BillNO  ");
-                }
-                if (!string.IsNullOrWhiteSpace(recordDetailQuery.LineCode))
-                {
-                    strSql.Append(" and LineCode=@LineCode  ");
-                }
-                if (!string.IsNullOrWhiteSpace(recordDetailQuery.StationCode))
-                {
-                    strSql.Append(" and StationCode=@StationCode  ");
-                }
-                if (recordDetailQuery.WId > 0)
-                {
-                    strSql.Append(" and WId=@WId  ");
+                    strSql.Append(" and  (LCode=@keyWords or LName=@keyWords or LFullName=@keyWords or LType=@keyWords) ");
+                    lineQuery.keyWords = lineQuery.keyWords.Trim();
+
                 }
                 var param = new
                 {
-                    recordDetailQuery.BillNO,
-                    recordDetailQuery.LineCode,
-                    recordDetailQuery.StationCode,
-                    recordDetailQuery.WId
+                   lineQuery.keyWords
                 };
 
-                mResult = conn.Query<TRecordDetailEntity>(strSql.ToString(), param).ToList();
+                mResult = conn.Query<TLineEntity>(strSql.ToString(), param).ToList();
             }
             return mResult;
         }

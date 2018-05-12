@@ -4,9 +4,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //---------------------------------------------------------------------------------
-// <copyright company="XiaoQingWa" file="tRecordDetailRespository.cs" >
+// <copyright company="XiaoQingWa" file="tCounterRespository.cs" >
 //      Author: Peng.Zhu
-//      Create Time: 2018/5/5 20:59:35
+//      Create Time: 2018/5/5 20:52:26
 //      Description: 
 // </copyright>
 //---------------------------------------------------------------------------------
@@ -25,14 +25,14 @@ using XiaoQingWa_Work_Model.Entity;
 namespace XiaoQingWa_Work_DAL
 {
     /// <summary>
-    /// TRecordDetailDAL数据访问类
+    /// TCounterDAL数据访问类
     /// </summary>
-    public partial class TRecordDetailRepository : BaseRepository<TRecordDetailEntity>, ITRecordDetailRepository
+    public partial class TCounterRepository : BaseRepository<TCounterEntity>, ITCounterRepository
     {
         /// <summary>
         /// 新增实体
         /// </summary>
-        public bool AddTRecordDetail(TRecordDetailEntity model)
+        public bool AddTCounter(TCounterEntity model)
         {
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
@@ -45,7 +45,7 @@ namespace XiaoQingWa_Work_DAL
         /// <summary>
         /// 新增实体--事物
         /// </summary>
-        public bool AddTRecordDetail(TRecordDetailEntity model, IDbConnection conn, IDbTransaction trans)
+        public bool AddTCounter(TCounterEntity model, IDbConnection conn, IDbTransaction trans)
         {
             var result = conn.Insert<int>(model, trans);
             if (result > 0)
@@ -58,14 +58,14 @@ namespace XiaoQingWa_Work_DAL
         /// </summary>
         /// <param name="id">主键id</param>
         /// <returns></returns>
-        public bool DelTRecordDetail(int id)
+        public bool DelTCounter(int id)
         {
             if (id > 0)
             {
                 using (IDbConnection conn = new SqlConnection(GetConnstr))
                 {
-                    string strSql = "delete from TRecordDetail where RId=@RId";
-                    var param = new { RId = id };
+                    string strSql = "delete from TCounter where CId=@CId";
+                    var param = new { CId = id };
                     var result = conn.Execute(strSql, param);
                     if (result > 0)
                         return true;
@@ -78,16 +78,16 @@ namespace XiaoQingWa_Work_DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DelTRecordDetailBatch(int[] ids)
+        public bool DelTCounterBatch(int[] ids)
         {
             if (ids.Length > 0)
             {
                 using (IDbConnection conn = new SqlConnection(GetConnstr))
                 {
-                    string strSql = "delete from  TRecordDetail where RId in @RId ";
+                    string strSql = "delete from  TCounter where CId in @CId ";
 
                     DynamicParameters param = new DynamicParameters();
-                    param.Add("RId", ids);
+                    param.Add("CId", ids);
                     var result = conn.Execute(strSql, param);
                     if (result > 0)
                         return true;
@@ -99,12 +99,12 @@ namespace XiaoQingWa_Work_DAL
         /// 获取类别实体根据ID
         /// </summary>
         /// <returns></returns>
-        public TRecordDetailEntity GetTRecordDetail(int id)
+        public TCounterEntity GetTCounter(int id)
         {
-            var mResult = new TRecordDetailEntity();
+            var mResult = new TCounterEntity();
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                mResult = conn.Get<TRecordDetailEntity>(id);
+                mResult = conn.Get<TCounterEntity>(id);
             }
             return mResult;
         }
@@ -112,12 +112,12 @@ namespace XiaoQingWa_Work_DAL
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<TRecordDetailEntity> GetTRecordDetailList()
+        public List<TCounterEntity> GetTCounterList()
         {
-            var mResult = new List<TRecordDetailEntity>();
+            var mResult = new List<TCounterEntity>();
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                mResult = conn.GetList<TRecordDetailEntity>().ToList();
+                mResult = conn.GetList<TCounterEntity>().ToList();
             }
             return mResult;
         }
@@ -125,7 +125,7 @@ namespace XiaoQingWa_Work_DAL
         /// 更新实体列表
         /// </summary>
         /// <returns></returns>
-        public bool UpdateTRecordDetail(TRecordDetailEntity entity)
+        public bool UpdateTCounter(TCounterEntity entity)
         {
             int row;
             using (IDbConnection conn = new SqlConnection(GetConnstr))
@@ -138,48 +138,53 @@ namespace XiaoQingWa_Work_DAL
         /// 更新实体列表--事物
         /// </summary>
         /// <returns></returns>
-        public bool UpdateTRecordDetail(TRecordDetailEntity entity, IDbConnection conn, IDbTransaction trans)
+        public bool UpdateTCounter(TCounterEntity entity, IDbConnection conn, IDbTransaction trans)
         {
             int row;
             row = conn.Update(entity, trans);
             return row > 0;
         }
 
-
-        public List<TRecordDetailEntity> GetRecordDetailListByQueryModel(TRecordDetailEntity recordDetailQuery)
+        public List<TCounterEntity> GetCounterListByQueryModel(string CountNo)
         {
-            var mResult = new List<TRecordDetailEntity>();
+            var mResult = new List<TCounterEntity>();
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                StringBuilder strSql = new StringBuilder("Select * from tRecordDetail   where 1=1 ");
+                StringBuilder strSql = new StringBuilder(" Select * from tCounter   where 1=1 ");
 
-                if (!string.IsNullOrWhiteSpace(recordDetailQuery.BillNO))
+                if (!string.IsNullOrWhiteSpace(CountNo))
                 {
-                    strSql.Append(" and BillNO=@BillNO  ");
-                }
-                if (!string.IsNullOrWhiteSpace(recordDetailQuery.LineCode))
-                {
-                    strSql.Append(" and LineCode=@LineCode  ");
-                }
-                if (!string.IsNullOrWhiteSpace(recordDetailQuery.StationCode))
-                {
-                    strSql.Append(" and StationCode=@StationCode  ");
-                }
-                if (recordDetailQuery.WId > 0)
-                {
-                    strSql.Append(" and WId=@WId  ");
+                    strSql.Append(" and CountNo=@keyWords ");
                 }
                 var param = new
                 {
-                    recordDetailQuery.BillNO,
-                    recordDetailQuery.LineCode,
-                    recordDetailQuery.StationCode,
-                    recordDetailQuery.WId
+                    keyWords = CountNo
                 };
 
-                mResult = conn.Query<TRecordDetailEntity>(strSql.ToString(), param).ToList();
+                mResult = conn.Query<TCounterEntity>(strSql.ToString(), param).ToList();
             }
             return mResult;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public bool UpdateStatu(int id, int state)
+        {
+            if (id > 0)
+            {
+                using (IDbConnection conn = new SqlConnection(GetConnstr))
+                {
+                    string strSql = "update  tCounter   set Status=@Status where CId=@CId";
+                    var param = new { CId = id, Status = state };
+                    var result = conn.Execute(strSql, param);
+                    if (result > 0)
+                        return true;
+                }
+            }
+            return false;
         }
     }
 }

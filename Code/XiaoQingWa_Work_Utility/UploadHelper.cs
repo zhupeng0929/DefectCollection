@@ -245,7 +245,7 @@ namespace XiaoQingWa_Work_Utility
         //        watermarkPath = Tool.ConfigString("ComfirmPictureUrl"); //章的图片
         //        if (string.IsNullOrEmpty(watermarkPath))
         //        {
-        //            watermarkPath = "http://img.17u.cn/ly/cn/img/admin/cruises/comfirm.png";
+        //            watermarkPath = "127.0.0.1/comfirm.png";
         //        }
         //        WebRequest webreq = WebRequest.Create(watermarkPath);
         //        //红色部分为文件URL地址，这里是一张图片
@@ -373,7 +373,7 @@ namespace XiaoQingWa_Work_Utility
         //        FtpHelper ftp = new FtpHelper(address, tempAddress, ftpUser, pass, 21);
         //        if (ftp.UpLoadFile(newFileName, stream, out dfsAddress))
         //        {
-        //            userPath = "http://img.17u.cn/ly" + tempAddress + newFileName;
+        //            userPath = "127.0.0.1" + tempAddress + newFileName;
         //        }
         //        //删除图片
         //        stream.Close();
@@ -430,7 +430,7 @@ namespace XiaoQingWa_Work_Utility
         //        FtpHelper ftp = new FtpHelper(address, tempAddress, ftpUser, pass, 21);
         //        if (ftp.UpLoadFile(newFileName, stream, out dfsAddress))
         //        {
-        //            userPath = "http://img.17u.cn/ly" + tempAddress + newFileName;
+        //            userPath = "127.0.0.1" + tempAddress + newFileName;
         //        }
         //        //删除图片
         //        stream.Close();
@@ -488,11 +488,11 @@ namespace XiaoQingWa_Work_Utility
         //        Stream fs = file.InputStream;
         //        if (fileExtension.Contains("doc") || fileExtension.Contains("docx"))
         //        {
-        //            listImageUrl = UploadImgForWord(ftp, newFileName, fs, "http://img.17u.cn/ly" + tempAddress, out res, out dfsAddressList);
+        //            listImageUrl = UploadImgForWord(ftp, newFileName, fs, "127.0.0.1" + tempAddress, out res, out dfsAddressList);
         //        }
         //        else if (fileExtension.Contains("pdf"))
         //        {
-        //            listImageUrl = UploadImgForPdf(ftp, newFileName, fs, "http://img.17u.cn/ly" + tempAddress, out res, out dfsAddressList);
+        //            listImageUrl = UploadImgForPdf(ftp, newFileName, fs, "127.0.0.1" + tempAddress, out res, out dfsAddressList);
         //        }
         //    }
         //    catch (Exception ex)
@@ -622,11 +622,11 @@ namespace XiaoQingWa_Work_Utility
 
         //        if (type == 1)
         //        {
-        //            listImageUrl = UploadImgForWord(ftp, fileName, stream, "http://img.17u.cn/ly" + tempAddress, out res, out dfsAddressList);
+        //            listImageUrl = UploadImgForWord(ftp, fileName, stream, "127.0.0.1" + tempAddress, out res, out dfsAddressList);
         //        }
         //        else if (type == 2)
         //        {
-        //            listImageUrl = UploadImgForPdf(ftp, fileName, stream, "http://img.17u.cn/ly" + tempAddress, out res, out dfsAddressList);
+        //            listImageUrl = UploadImgForPdf(ftp, fileName, stream, "127.0.0.1" + tempAddress, out res, out dfsAddressList);
         //        }
 
         //    }
