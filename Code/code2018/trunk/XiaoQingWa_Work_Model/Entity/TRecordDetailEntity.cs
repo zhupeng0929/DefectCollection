@@ -182,4 +182,9 @@ namespace XiaoQingWa_Work_Model.Entity
 
 
     }
+
+    public class RecordDetailQuery
+    {
+        public string keyWords { get; set; }
+    }
 }

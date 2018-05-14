@@ -94,7 +94,7 @@
                 });
             }
             if (rows.length == 0) {
-                $.alert({ content: "请至少选择一行" });
+                $.alert({ title: '提示',content: "请至少选择一行" });
                 return false;
             }
             layer.confirm('确认要删除吗？', function (index) {

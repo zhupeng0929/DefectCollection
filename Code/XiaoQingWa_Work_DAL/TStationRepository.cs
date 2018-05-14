@@ -38,6 +38,12 @@ namespace XiaoQingWa_Work_DAL
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
                 var result = conn.Insert<string>(model);
+                if (model != null && !string.IsNullOrWhiteSpace(model.LineCode))
+                {
+                    string strSql4 = "update  tLine    set StationCount=StationCount+1 where LCode=@LCode ";
+                    var param4 = new { LCode = model.LineCode };
+                    conn.Execute(strSql4, param4);
+                }
                 if (result != null)
                     return true;
             }
@@ -49,6 +55,7 @@ namespace XiaoQingWa_Work_DAL
         public bool AddTStation(TStationEntity model, IDbConnection conn, IDbTransaction trans)
         {
             var result = conn.Insert<string>(model, trans);
+
             if (result != null)
                 return true;
             else
@@ -80,7 +87,12 @@ namespace XiaoQingWa_Work_DAL
                                 var param3 = new { model.GoodBtnId, model.BadBtnId };
                                 conn.Execute(strSql3, param3, trans);
                             }
-
+                            if (model != null && !string.IsNullOrWhiteSpace(model.LineCode))
+                            {
+                                string strSql4 = "update  tLine    set StationCount=StationCount-1 where LCode=@LCode ";
+                                var param4 = new { LCode = model.LineCode };
+                                conn.Execute(strSql4, param4, trans);
+                            }
                             var result = conn.Execute(strSql, param, trans);
                             if (result > 0)
                             {
@@ -127,6 +139,12 @@ namespace XiaoQingWa_Work_DAL
                                     string strSql3 = "update  tCounter   set Status=0 where CountNo=@GoodBtnId or CountNo=@BadBtnId";
                                     var param3 = new { GoodBtnId = model.GoodBtnId ?? "", BadBtnId = model.BadBtnId ?? "" };
                                     conn.Execute(strSql3, param3, trans);
+                                }
+                                if (model != null && !string.IsNullOrWhiteSpace(model.LineCode))
+                                {
+                                    string strSql4 = "update  tLine    set StationCount=StationCount-1 where LCode=@LCode ";
+                                    var param4 = new { LCode = model.LineCode };
+                                    conn.Execute(strSql4, param4, trans);
                                 }
                             }
 
@@ -193,7 +211,30 @@ namespace XiaoQingWa_Work_DAL
             int row;
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
+
+                var baseModel = GetSingle(entity.StationCode);
+                if (baseModel.LineCode != entity.LineCode)
+                {
+                    if (baseModel != null && !string.IsNullOrWhiteSpace(baseModel.LineCode))
+                    {
+                        string strSql4 = "update  tLine    set StationCount=StationCount-1 where LCode=@LCode ";
+                        var param4 = new { LCode = baseModel.LineCode };
+                        conn.Execute(strSql4, param4);
+                    }
+                    if (entity != null && !string.IsNullOrWhiteSpace(entity.LineCode))
+                    {
+                        string strSql4 = "update  tLine    set StationCount=StationCount+1 where LCode=@LCode ";
+                        var param4 = new { LCode = entity.LineCode };
+                        conn.Execute(strSql4, param4);
+                    }
+                }
+
+
                 row = conn.Update(entity);
+
+
+
+
             }
             return row > 0;
         }

@@ -144,5 +144,103 @@ namespace XiaoQingWa_Work_DAL
             row = conn.Update(entity, trans);
             return row > 0;
         }
+
+
+        public List<TRecordDetailEntity> GetRecordDetailListByQueryModel(TRecordDetailEntity recordDetailQuery)
+        {
+            var mResult = new List<TRecordDetailEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                StringBuilder strSql = new StringBuilder("Select * from tRecordDetail   where 1=1 ");
+
+                if (!string.IsNullOrWhiteSpace(recordDetailQuery.BillNO))
+                {
+                    strSql.Append(" and BillNO=@BillNO  ");
+                }
+                if (!string.IsNullOrWhiteSpace(recordDetailQuery.LineCode))
+                {
+                    strSql.Append(" and LineCode=@LineCode  ");
+                }
+                if (!string.IsNullOrWhiteSpace(recordDetailQuery.StationCode))
+                {
+                    strSql.Append(" and StationCode=@StationCode  ");
+                }
+                if (recordDetailQuery.WId > 0)
+                {
+                    strSql.Append(" and WId=@WId  ");
+                }
+                var param = new
+                {
+                    recordDetailQuery.BillNO,
+                    recordDetailQuery.LineCode,
+                    recordDetailQuery.StationCode,
+                    recordDetailQuery.WId
+                };
+
+                mResult = conn.Query<TRecordDetailEntity>(strSql.ToString(), param).ToList();
+            }
+            return mResult;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public bool UpdateRecordStatu(int id, int state)
+        {
+            if (id > 0)
+            {
+                using (IDbConnection conn = new SqlConnection(GetConnstr))
+                {
+                    string strSql = "update  tRecordDetail   set Status=@Status where RId	=@RId	";
+                    var param = new { RId = id, Status = state };
+                    var result = conn.Execute(strSql, param);
+                    if (result > 0)
+                        return true;
+                }
+            }
+            return false;
+        }
+        public bool UpdateTask(string[] ids, string BillNO)
+        {
+
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                conn.Open();
+                var taskModel = conn.Get<TTaskEntity>(BillNO);
+                if (taskModel != null)
+                {
+                    using (IDbTransaction trans = conn.BeginTransaction())
+                    {
+                        try
+                        {
+
+                            foreach (var id in ids)
+                            {
+                                string strSql3 = "update  tRecordDetail    set BillNO=@BillNO,TName=@TName where RId=@RId ";
+                                var param3 = new { BillNO, taskModel.TName, RId = id };
+                                conn.Execute(strSql3, param3, trans);
+                            }
+                            trans.Commit();
+                            return true;
+
+                        }
+                        catch
+                        {
+                            trans.Rollback();
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            return false;
+        }
     }
 }

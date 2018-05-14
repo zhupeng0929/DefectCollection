@@ -268,6 +268,8 @@
     <Content Include="plugins\lib\Hui-iconfont\1.0.8\iconfont.css" />
     <Content Include="plugins\lib\Hui-iconfont\1.0.8\iconfont.min.css" />
     <Content Include="plugins\lib\Hui-iconfont\1.0.8\iconfont.svg" />
+    <Content Include="plugins\lib\jquery.confirm\jquery-confirm.min.css" />
+    <Content Include="plugins\lib\jquery.confirm\jquery-confirm.min.js" />
     <Content Include="plugins\lib\jquery.contextmenu\jquery.contextmenu.r2.js" />
     <Content Include="plugins\lib\jquery.SuperSlide\2.1.1\jquery.SuperSlide.min.js" />
     <Content Include="plugins\lib\jquery.validation\1.14.0\additional-methods.js" />
@@ -1328,6 +1330,7 @@
     <Content Include="Views\Worker\WorkerList.cshtml" />
     <Content Include="Views\RecordDetail\RecordDetailList.cshtml" />
     <Content Include="Views\RecordDetail\RecordDetailResult.cshtml" />
+    <Content Include="Views\RecordDetail\UpdateTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

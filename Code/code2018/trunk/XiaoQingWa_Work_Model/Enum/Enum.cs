@@ -104,4 +104,19 @@ namespace XiaoQingWa_Work_Model.Enum
         [Description("请假或缺勤")]
         Leave = 1
     }
+
+    public enum RecordStatu
+    {
+        /// <summary>
+        /// 有效
+        /// </summary>
+        [Description("有效")]
+        Valid = 0,
+
+        /// <summary>
+        /// 无效
+        /// </summary>
+        [Description("无效")]
+        UnValid = 1
+    }
 }

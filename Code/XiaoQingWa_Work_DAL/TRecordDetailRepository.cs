@@ -181,5 +181,66 @@ namespace XiaoQingWa_Work_DAL
             }
             return mResult;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public bool UpdateRecordStatu(int id, int state)
+        {
+            if (id > 0)
+            {
+                using (IDbConnection conn = new SqlConnection(GetConnstr))
+                {
+                    string strSql = "update  tRecordDetail   set Status=@Status where RId	=@RId	";
+                    var param = new { RId = id, Status = state };
+                    var result = conn.Execute(strSql, param);
+                    if (result > 0)
+                        return true;
+                }
+            }
+            return false;
+        }
+        public bool UpdateTask(string[] ids, string BillNO)
+        {
+
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                conn.Open();
+                var taskModel = conn.Get<TTaskEntity>(BillNO);
+                if (taskModel != null)
+                {
+                    using (IDbTransaction trans = conn.BeginTransaction())
+                    {
+                        try
+                        {
+
+                            foreach (var id in ids)
+                            {
+                                string strSql3 = "update  tRecordDetail    set BillNO=@BillNO,TName=@TName where RId=@RId ";
+                                var param3 = new { BillNO, taskModel.TName, RId = id };
+                                conn.Execute(strSql3, param3, trans);
+                            }
+                            trans.Commit();
+                            return true;
+
+                        }
+                        catch
+                        {
+                            trans.Rollback();
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            return false;
+        }
     }
 }

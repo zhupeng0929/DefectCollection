@@ -74,7 +74,7 @@ namespace XiaoQingWa_Work.Controllers
 
                 if (stationInfoEntity.StationId == 0)
                 {
-                    result = tStationRepository.AddReturnStr(stationInfoEntity) != null;
+                    result = tStationRepository.AddTStation(stationInfoEntity);
                 }
                 else
                 {
@@ -91,7 +91,7 @@ namespace XiaoQingWa_Work.Controllers
                     stationModel.BadBtnId = stationInfoEntity.BadBtnId;
                     //stationModel.BadBtnId = stationInfoEntity.StationFullName;
 
-                    result = tStationRepository.Update(stationModel);
+                    result = tStationRepository.UpdateTStation(stationModel);
                 }
             }
 

@@ -19,7 +19,8 @@ namespace XiaoQingWa_Work.Controllers
         protected readonly ITTaskWorkerRepository tTaskWorkerRepository = new TTaskWorkerRepository();
         protected readonly ITWorkerRepository tWorkerRepository = new TWorkerRepository();
         protected readonly ITRecordDetailRepository tRecordDetailRepository = new TRecordDetailRepository();
-        //protected readonly IPictureInfoRepository pictureInfoRepository = new PictureInfoRepository();
+
+        protected readonly ITTaskRepository  tTaskRepository = new TTaskRepository();
         //protected readonly IPictureInfoRepository pictureInfoRepository = new PictureInfoRepository();
         //protected readonly IPictureInfoRepository pictureInfoRepository = new PictureInfoRepository();
         //protected readonly IPictureInfoRepository pictureInfoRepository = new PictureInfoRepository();
