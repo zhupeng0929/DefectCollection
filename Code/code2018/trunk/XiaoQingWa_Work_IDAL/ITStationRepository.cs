@@ -17,5 +17,6 @@ namespace XiaoQingWa_Work_IDAL
         bool UpdateStatu(int id, int state);
         bool BondCounter(int StationId, string GoodBtnId, string BadBtnId, int type);
         bool UnBindStation(int id, string code, int type);
+        List<TStationEntity> GetStationListByLineCode(string lineCode);
     }
 }

@@ -42,6 +42,40 @@ namespace XiaoQingWa_Work_DAL
             }
             return false;
         }
+
+        public bool AddTWorkScheduleTran(TTaskEntity taskEntity, List<TWorkScheduleEntity> list, List<TWorkerEntity> workerEntities)
+        {
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                conn.Open();
+                using (IDbTransaction trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        conn.Insert<string>(taskEntity, trans);
+                        foreach (var item in list)
+                        {
+                            AddTWorkSchedule(item, conn, trans);
+                        }
+                        foreach (var worker in workerEntities)
+                        {
+                            conn.Update(worker, trans);
+                        }
+                        trans.Commit();
+                        return true;
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                        return false;
+
+                    }
+                }
+            }
+
+        }
+
+
         /// <summary>
         /// 新增实体--事物
         /// </summary>

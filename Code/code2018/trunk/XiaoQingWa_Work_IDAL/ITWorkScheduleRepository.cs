@@ -13,6 +13,7 @@ namespace XiaoQingWa_Work_IDAL
         List<TWorkScheduleEntity> GetTWorkScheduleList();
         bool UpdateTWorkSchedule(TWorkScheduleEntity entity);
         bool UpdateTWorkSchedule(TWorkScheduleEntity entity, IDbConnection conn, IDbTransaction trans);
+        bool AddTWorkScheduleTran(TTaskEntity taskEntity, List<TWorkScheduleEntity> list,List<TWorkerEntity> workerEntities);
     }
 }
 

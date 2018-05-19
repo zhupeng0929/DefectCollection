@@ -290,7 +290,26 @@ namespace XiaoQingWa_Work_DAL
             }
             return mResult;
         }
+        public List<TStationEntity> GetStationListByLineCode(string lineCode)
+        {
+            var mResult = new List<TStationEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                StringBuilder strSql = new StringBuilder("Select * from tStation  where 1=1 ");
 
+                if (!string.IsNullOrWhiteSpace(lineCode))
+                {
+                    strSql.Append(" and  LineCode=@lineCode ");
+                }
+                var param = new
+                {
+                    lineCode
+                };
+                strSql.Append(" order by StationIndex ");
+                mResult = conn.Query<TStationEntity>(strSql.ToString(), param).ToList();
+            }
+            return mResult;
+        }
         /// <summary>
         /// 绑定设备
         /// </summary>

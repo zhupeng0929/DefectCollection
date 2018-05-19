@@ -63,6 +63,9 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PaiBan">
+      <HintPath>.\PaiBan.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -171,7 +174,9 @@
     <Compile Include="Controllers\CounterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LineController.cs" />
+    <Compile Include="Controllers\PaiBanController.cs" />
     <Compile Include="Controllers\RecordDetailController.cs" />
+    <Compile Include="Controllers\StaticController.cs" />
     <Compile Include="Controllers\StationController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -192,6 +197,9 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\前台.png" />
+    <Content Include="Content\工位.png" />
+    <Content Include="Content\顾问.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1331,6 +1339,11 @@
     <Content Include="Views\RecordDetail\RecordDetailList.cshtml" />
     <Content Include="Views\RecordDetail\RecordDetailResult.cshtml" />
     <Content Include="Views\RecordDetail\UpdateTask.cshtml" />
+    <Content Include="Views\Static\Index.cshtml" />
+    <Content Include="Views\Static\TaskResult.cshtml" />
+    <Content Include="Views\Static\WorkerResult.cshtml" />
+    <Content Include="Views\Static\LineResult.cshtml" />
+    <Content Include="Views\PaiBan\PaiBanShow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

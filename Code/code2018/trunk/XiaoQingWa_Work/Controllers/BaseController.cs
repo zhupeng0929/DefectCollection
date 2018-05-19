@@ -21,6 +21,8 @@ namespace XiaoQingWa_Work.Controllers
         protected readonly ITRecordDetailRepository tRecordDetailRepository = new TRecordDetailRepository();
 
         protected readonly ITTaskRepository  tTaskRepository = new TTaskRepository();
+
+        protected readonly IStsticRepository ststicRepository = new StsticRepository();
         //protected readonly IPictureInfoRepository pictureInfoRepository = new PictureInfoRepository();
         //protected readonly IPictureInfoRepository pictureInfoRepository = new PictureInfoRepository();
         //protected readonly IPictureInfoRepository pictureInfoRepository = new PictureInfoRepository();

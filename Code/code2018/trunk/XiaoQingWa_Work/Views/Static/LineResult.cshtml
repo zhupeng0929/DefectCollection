@@ -1,0 +1,49 @@
+﻿@model IEnumerable<XiaoQingWa_Work_Model.Entity.LineStatic>
+@using XiaoQingWa_Work_Utility
+@using XiaoQingWa_Work_Model.Enum
+
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="50">流水线编码</th>
+            <th width="50">流水线名称</th>
+            <th width="100">好件统计</th>
+            <th width="100">坏件统计</th>
+            <th width="100">合计</th>
+            <th width="100">汇总差额</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr class="text-c">
+                    <td>@Html.DisplayFor(modelItem => item.LCode)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.GoodCount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.BadCount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.GoodCount + item.BadCount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DiffCount)</td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.table-sort').dataTable({
+                "aaSorting": [[1, "desc"]],//默认第几个排序
+                "bStateSave": true,//状态保存
+                "aoColumnDefs": [
+                    //{"bVisible": false, "aTargets": [ 1 ]}, //控制列的隐藏显示
+                    //{ "orderable": false, "aTargets": [0, 12, 13] }// 制定列不参与排序
+                ]
+            });
+        });
+
+    </script>
+
+}

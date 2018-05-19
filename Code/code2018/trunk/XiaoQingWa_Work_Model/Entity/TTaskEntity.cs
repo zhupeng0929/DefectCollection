@@ -154,5 +154,9 @@ namespace XiaoQingWa_Work_Model.Entity
        
         public int OperateType { get; set; }
 
+        /// <summary>
+        /// 0-未启动，1-启动
+        /// </summary>
+        public int Status { get; set; }
     }
 }
