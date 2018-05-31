@@ -15,6 +15,7 @@ using System.Runtime.Serialization;
 
 using System.ComponentModel;
 using Dapper;
+using System.Collections.Generic;
 
 namespace XiaoQingWa_Work_Model.Entity
 {
@@ -125,6 +126,14 @@ namespace XiaoQingWa_Work_Model.Entity
             get { return _refreshDate; }
             set { _refreshDate = value; }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [IgnoreInsert]
+        [IgnoreSelect]
+        [IgnoreUpdate]
+        public List<TWorkerLineEntity> LineList { get; set; }
     }
 
     public class WorkerQuery

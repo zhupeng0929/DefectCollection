@@ -42,6 +42,7 @@ namespace XiaoQingWa_Work_Model.Entity
         /// <summary>
         /// 
         /// </summary>
+        [Key]
         [Description("")]
         public int Id
         {
@@ -62,7 +63,7 @@ namespace XiaoQingWa_Work_Model.Entity
         /// <summary>
         /// 工人id
         /// </summary>
-        [Key]
+        
         [Description("工人id")]
         public int WId
         {

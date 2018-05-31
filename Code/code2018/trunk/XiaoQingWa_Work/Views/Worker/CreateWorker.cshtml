@@ -1,4 +1,9 @@
 ﻿@model XiaoQingWa_Work_Model.Entity.TWorkerEntity
+@section Header{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/plugins/lib/mutiselect/multiselectSrc/jquery.multiselect.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/plugins/lib/mutiselect/assets/style.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/plugins/lib/mutiselect/ui/jquery-ui.css")" />
+}
 
 <article class="page-container">
     <form action="" method="post" class="form form-horizontal" id="form">
@@ -42,7 +47,7 @@
         <div class="row cl">
             <label class="form-label col-xs-3 col-sm-2">流水线：</label>
             <div class="formControls col-xs-7 col-sm-8">
-                @Html.DropDownListFor(m => m.LineCode, @ViewBag.LineList as IEnumerable<SelectListItem>, new { type = "text", @class = "input-text", onchange = "OnChange();", @value = "", @placeholder = "" })
+                @Html.DropDownList("LineCode", @ViewBag.LineList as IEnumerable<SelectListItem>, new { type = "text", @multiple = "multiple", @class = "input-text", @value = "" })
             </div>
         </div>
 
@@ -53,8 +58,14 @@
         </div>
     </form>
 </article>
-
+@Html.Hidden("selectcode", (string)ViewBag.SelectCode)
 @section pagescripts{
+
+    <script type="text/javascript" src="@Url.Content("~/plugins/lib/mutiselect/ui/jquery.ui.core.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/plugins/lib/mutiselect/ui/jquery.ui.widget.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/plugins/lib/mutiselect/assets/prettify.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/plugins/lib/mutiselect/multiselectSrc/jquery.multiselect.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/plugins/lib/mutiselect/multiselectSrc/jquery.multiselect.filter.js")"></script>
     <script type="text/javascript">
         $(function () {
             $('.skin-minimal input').iCheck({
@@ -62,6 +73,32 @@
                 radioClass: 'iradio-blue',
                 increaseArea: '20%'
             });
+
+            $("#LineCode").multiselect({
+                noneSelectedText: "--请选择--",
+                checkAllText: "全选",
+                uncheckAllText: '全不选',
+                selectedList: 1
+            });
+            $("#LineCode").multiselectfilter({
+            });
+
+            var sceneIdList = $("#selectcode").val();
+            if ($("#selectcode").val() != undefined) {
+                sceneIdArr = sceneIdList.split(",");
+
+                $('#LineCode option').each(function (i, content) {
+
+                    if ($.inArray($.trim(content.value), sceneIdArr) >= 0) {
+                        this.selected = true;
+                    }
+                });
+
+                //设置选中值后，需要刷新select控件
+                $("#LineCode").multiselect('refresh');
+            }
+            
+
 
             initValidator();
         });

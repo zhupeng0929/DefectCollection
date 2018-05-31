@@ -9,8 +9,8 @@ namespace XiaoQingWa_Work_IDAL
         bool AddTWorkerLine(TWorkerLineEntity model, IDbConnection conn, IDbTransaction trans);
         bool DelTWorkerLine(int id);
         bool DelTWorkerLineBatch(int[] ids);
-        TWorkerLineEntity GetTWorkerLine(int id);
-        List<TWorkerLineEntity> GetTWorkerLineList();
+        List<TWorkerLineEntity> GetTWorkerLineList(int wid);
+        List<TWorkerLineEntity> GetTWorkerLineList(string lineCode);
         bool UpdateTWorkerLine(TWorkerLineEntity entity);
         bool UpdateTWorkerLine(TWorkerLineEntity entity, IDbConnection conn, IDbTransaction trans);
     }

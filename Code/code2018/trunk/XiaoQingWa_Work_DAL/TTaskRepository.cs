@@ -35,6 +35,7 @@ namespace XiaoQingWa_Work_DAL
         {
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
+                
                 var result = conn.Insert<int>(model);
                 if (result > 0)
                     return true;

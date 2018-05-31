@@ -33,7 +33,7 @@
                     <td>@Html.DisplayFor(modelItem => item.Qty)</td>
                     <td>@Html.DisplayFor(modelItem => item.GoodCount)</td>
                     <td>@Html.DisplayFor(modelItem => item.BadCount)</td>
-                    <td>@Html.DisplayFor(modelItem => item.GoodCount + item.BadCount)</td>
+                    <td>@Html.Display((item.GoodCount + item.BadCount).ToString())</td>
                     <td>@Html.DisplayFor(modelItem => item.DiffCount)</td>
 
                 </tr>

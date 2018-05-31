@@ -23,12 +23,13 @@ namespace XiaoQingWa_Work.Controllers
         public ActionResult CreateWorker(int? workerid)
         {
             var model = new TWorkerEntity();
+            var lineworkerList = new List<TWorkerLineEntity>();
             if (workerid.HasValue)
             {
                 model = tWorkerRepository.GetSingle(workerid.Value);
+                lineworkerList = tWorkerLineRepository.GetTWorkerLineList(workerid.Value);
             }
             List<SelectListItem> spanSltlist = new List<SelectListItem>();
-            spanSltlist.Add(new SelectListItem { Text = "--请选择--", Value = "" });
             var lineList = tLineRepository.GetList().Distinct(l => l.LCode);
             if (lineList != null)
             {
@@ -38,17 +39,19 @@ namespace XiaoQingWa_Work.Controllers
                 }
             }
             ViewBag.LineList = spanSltlist;
+            ViewBag.SelectCode =string.Join(",", lineworkerList.Select(l => l.LCode));
+
             return View(model);
         }
         [HttpPost]
-        public ActionResult CreateWorker(TWorkerEntity workerInfoEntity)
+        public ActionResult CreateWorker(TWorkerEntity workerInfoEntity, string[] LineCode)
         {
             var result = false;
             ReturnJsonMessage msg = new ReturnJsonMessage();
             if (workerInfoEntity != null)
             {
                 var model = tWorkerRepository.GetList().FirstOrDefault(w => w.WNo == workerInfoEntity.WNo && w.WId != workerInfoEntity.WId);
-                if (model != null )
+                if (model != null)
                 {
                     msg.Text = "员工编号不能重复";
                     msg.Value = "error";
@@ -57,8 +60,7 @@ namespace XiaoQingWa_Work.Controllers
 
                 if (workerInfoEntity.WId == 0)
                 {
-
-                    result = tWorkerRepository.AddReturnInt(workerInfoEntity) > 0;
+                    result = tWorkerRepository.AddTWorker(workerInfoEntity, LineCode);
                 }
                 else
                 {
@@ -68,7 +70,12 @@ namespace XiaoQingWa_Work.Controllers
                     uerModel.WSex = workerInfoEntity.WSex;
                     uerModel.WDescript = workerInfoEntity.WDescript;
                     uerModel.LineCode = workerInfoEntity.LineCode;
-                    result = tWorkerRepository.Update(uerModel);
+                    uerModel.LineList = new List<TWorkerLineEntity>();
+                    foreach (var code in LineCode)
+                    {
+                        uerModel.LineList.Add(new TWorkerLineEntity() { WId = uerModel.WId, LCode = code });
+                    }
+                    result = tWorkerRepository.UpdateTWorker(uerModel);
                 }
             }
 

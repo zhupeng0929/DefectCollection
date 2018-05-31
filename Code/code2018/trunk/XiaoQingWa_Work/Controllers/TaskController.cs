@@ -92,15 +92,15 @@ namespace XiaoQingWa_Work.Controllers
                 result.Message = "物料数量不能为0";
                 return result;
             }
-            if (taskEntity.OperateType <= 0 || taskEntity.OperateType > 2)
+            if (taskEntity.OperateType < 0 || taskEntity.OperateType > 2)
             {
                 result.Status = false;
                 result.Message = "类型错误";
                 return result;
             }
             #endregion
-
-            if (tTaskRepository.GetTTaskList().Where(t => t.TName == taskEntity.TName && t.BillNO != taskEntity.BillNO) != null)
+            var model = tTaskRepository.GetTTaskList().FirstOrDefault(t => t.TName == taskEntity.TName && t.BillNO != taskEntity.BillNO);
+            if (model != null)
             {
                 result.Status = false;
                 result.Message = "任务单已存在！";
@@ -194,63 +194,64 @@ namespace XiaoQingWa_Work.Controllers
 
         private void Add(TTaskEntity taskEntity, ResponseResult result)
         {
-            var model = tTaskRepository.GetSingle(taskEntity.BillNO);//任务单
-            if (model != null)
-            {
-                result.Status = false;
-                result.Message = "任务单号已存在";
-                return;
-            }
-            var lineModel = tLineRepository.GetSingle(taskEntity.LineCode);//流水线
-            if (lineModel == null)
-            {
-                result.Status = false;
-                result.Message = "该流水线不存在";
-                return;
-            }
-            var worker = tWorkerRepository.GetTTaskWorkerListByLineCode(taskEntity.LineCode);//流水线工人
-            if (worker == null || worker.Count == 0)
-            {
-                result.Status = false;
-                result.Message = "该流水线暂未分配工人";
-                return;
-            }
-            var station = tStationRepository.GetStationListByLineCode(taskEntity.LineCode);//工位
+            //var model = tTaskRepository.GetSingle(taskEntity.BillNO);//任务单
+            //if (model != null)
+            //{
+            //    result.Status = false;
+            //    result.Message = "任务单号已存在";
+            //    return;
+            //}
+            //var lineModel = tLineRepository.GetTLine(taskEntity.LineCode);//流水线
+            //if (lineModel == null)
+            //{
+            //    result.Status = false;
+            //    result.Message = "该流水线不存在";
+            //    return;
+            //}
+            //var worker = tWorkerRepository.GetTTaskWorkerListByLineCode(taskEntity.LineCode);//流水线工人
+            //if (worker == null || worker.Count == 0)
+            //{
+            //    result.Status = false;
+            //    result.Message = "该流水线暂未分配工人";
+            //    return;
+            //}
+            //var station = tStationRepository.GetStationListByLineCode(taskEntity.LineCode);//工位
 
-            if (worker == null || worker.Count == 0)
-            {
-                result.Status = false;
-                result.Message = "该流水线暂无工位";
-                return;
-            }
+            //if (worker == null || worker.Count == 0)
+            //{
+            //    result.Status = false;
+            //    result.Message = "该流水线暂无工位";
+            //    return;
+            //}
 
 
 
             #region 排班
 
 
-            var paiban = PaiBan(lineModel.StationCount, worker.OrderBy(d => d.OrderIndex).ToList());//排班结果，排班后人的序号
-            var paibancount = paiban[0].Count;
-            var ScheduleList = new List<TWorkScheduleEntity>();
-            for (int i = 0; i < paibancount && i < station.Count; i++)
-            {
-                var item = paiban[0].Dequeue();
-                TWorkScheduleEntity workScheduleEntity = new TWorkScheduleEntity();
-                workScheduleEntity.BillNO = taskEntity.BillNO;
-                workScheduleEntity.WId = item.WId;
-                workScheduleEntity.WName = item.WName;
-                workScheduleEntity.StationCode = station[i].StationCode;
-                workScheduleEntity.StationIndex = station[i].StationIndex;
-                workScheduleEntity.StationName = station[i].StationName;
-                workScheduleEntity.GoodBtnId = station[i].GoodBtnId;
-                workScheduleEntity.BadBtnId = station[i].BadBtnId;
-                workScheduleEntity.LineCode = taskEntity.LineCode;
-                workScheduleEntity.Date = DateTime.Now;
-                ScheduleList.Add(workScheduleEntity);
-            }
-            var scheduleResult = tWorkScheduleRepository.AddTWorkScheduleTran(taskEntity, ScheduleList, paiban[1].ToList());
+            //var paiban = PaiBan(lineModel.StationCount, worker.OrderBy(d => d.OrderIndex).ToList());//排班结果，排班后人的序号
+            //var paibancount = paiban[0].Count;
+            //var ScheduleList = new List<TWorkScheduleEntity>();
+            //for (int i = 0; i < paibancount && i < station.Count; i++)
+            //{
+            //    var item = paiban[0].Dequeue();
+            //    TWorkScheduleEntity workScheduleEntity = new TWorkScheduleEntity();
+            //    workScheduleEntity.BillNO = taskEntity.BillNO;
+            //    workScheduleEntity.WId = item.WId;
+            //    workScheduleEntity.WName = item.WName;
+            //    workScheduleEntity.StationCode = station[i].StationCode;
+            //    workScheduleEntity.StationIndex = station[i].StationIndex;
+            //    workScheduleEntity.StationName = station[i].StationName;
+            //    workScheduleEntity.GoodBtnId = station[i].GoodBtnId;
+            //    workScheduleEntity.BadBtnId = station[i].BadBtnId;
+            //    workScheduleEntity.LineCode = taskEntity.LineCode;
+            //    workScheduleEntity.Date = DateTime.Now;
+            //    ScheduleList.Add(workScheduleEntity);
+            //}
+            //var scheduleResult = tWorkScheduleRepository.AddTWorkScheduleTran(taskEntity, ScheduleList, paiban[1].ToList());
 
-            if (scheduleResult)
+            var scheduleResult = tTaskRepository.AddReturnStr(taskEntity);
+            if (!string.IsNullOrWhiteSpace(scheduleResult))
             {
                 result.Status = true;
                 result.Message = "新增任务成功";
@@ -391,6 +392,45 @@ namespace XiaoQingWa_Work.Controllers
             }
 
 
+        }
+
+
+        public bool ArrangerOrder(string BillNO)
+        {
+            var model = tTaskRepository.GetSingle(BillNO);//任务单
+
+            //判断流水线是否已经排班
+            var schedul = tWorkScheduleRepository.GetTWorkScheduleList(model.LineCode, model.StartDateTime);
+            if (schedul != null && schedul.Count > 0)//表示该流水线已经排过班
+            {
+                return false;
+            }
+
+            var lineModel = tLineRepository.GetTLine(model.LineCode);//流水线
+            var worker = tWorkerRepository.GetTTaskWorkerListByLineCode(model.LineCode, model.StartDateTime);//可以参与流水线工人
+            var station = tStationRepository.GetStationListByLineCode(model.LineCode);//工位
+            var paiban = PaiBan(lineModel.StationCount, worker.OrderBy(d => d.OrderIndex).ToList());//排班结果，排班后人的序号
+            var paibancount = paiban[0].Count;
+            var ScheduleList = new List<TWorkScheduleEntity>();
+            for (int i = 0; i < paibancount && i < station.Count; i++)
+            {
+                var item = paiban[0].Dequeue();
+                TWorkScheduleEntity workScheduleEntity = new TWorkScheduleEntity();
+                workScheduleEntity.BillNO = BillNO;
+                workScheduleEntity.WId = item.WId;
+                workScheduleEntity.WName = item.WName;
+                workScheduleEntity.StationCode = station[i].StationCode;
+                workScheduleEntity.StationIndex = station[i].StationIndex;
+                workScheduleEntity.StationName = station[i].StationName;
+                workScheduleEntity.GoodBtnId = station[i].GoodBtnId;
+                workScheduleEntity.BadBtnId = station[i].BadBtnId;
+                workScheduleEntity.LineCode = model.LineCode;
+                workScheduleEntity.Date = model.StartDateTime;
+                ScheduleList.Add(workScheduleEntity);
+            }
+            var scheduleResult = tWorkScheduleRepository.AddTWorkScheduleTran(ScheduleList, paiban[1].ToList());
+
+            return scheduleResult;
         }
     }
     public class Framer

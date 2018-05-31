@@ -112,12 +112,25 @@ namespace XiaoQingWa_Work_DAL
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<TWorkerLineEntity> GetTWorkerLineList()
+        public List<TWorkerLineEntity> GetTWorkerLineList(int wid)
         {
             var mResult = new List<TWorkerLineEntity>();
+            var str = "select * from tWorkerLine where WId=@WId";
+            var param = new { WId = wid };
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                mResult = conn.GetList<TWorkerLineEntity>().ToList();
+                mResult = conn.Query<TWorkerLineEntity>(str, param).ToList();
+            }
+            return mResult;
+        }
+        public List<TWorkerLineEntity> GetTWorkerLineList(string lineCode)
+        {
+            var mResult = new List<TWorkerLineEntity>();
+            var str = "select * from tWorkerLine where LCode=@LCode";
+            var param = new { LCode = lineCode };
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                mResult = conn.Query<TWorkerLineEntity>(str, param).ToList();
             }
             return mResult;
         }

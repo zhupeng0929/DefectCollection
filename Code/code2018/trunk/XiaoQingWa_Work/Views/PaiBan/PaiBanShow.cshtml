@@ -1,23 +1,29 @@
 ﻿
 @{
     Layout = null;
-}
 
+}
+@model List<XiaoQingWa_Work_Model.Model.PaiBanViewModel>
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>PaiBanShow</title>
+    <script src="~/plugins/lib/jquery/1.9.1/jquery.min.js"></script>
+    <script src="~/plugins/lib/layer/2.4/layer.js"></script>
+    <script src="~/plugins/static/h-ui.admin/js/H-ui.admin.js"></script>
+    <link href="~/plugins/static/h-ui.admin/css/H-ui.admin.css" rel="stylesheet" />
+    <link href="~/plugins/static/h-ui/css/H-ui.min.css" rel="stylesheet" />
+    <title>今日座次安排</title>
     <style>
         .ico {
-            width: 150px;
-            height: 150px;
+            width: 100px;
+            height: 100px;
         }
 
         .img {
-            width: 30px;
-            height: 30px;
+            width: 60px;
+            height: 60px;
             position: absolute;
             background-color: red;
             border-radius: 100%;
@@ -25,14 +31,19 @@
             display: flex;
             justify-content: center;
         }
-       
+
         .num {
             font-size: 20px;
             font-weight: 600;
         }
 
+        .code {
+            font-size: 40px;
+            font-weight: 600;
+        }
+
         .name {
-            align-self: left;
+            /*align-self: left;*/
         }
 
         .gongwei {
@@ -40,8 +51,13 @@
             flex-direction: row;
             border-style: solid;
             margin: 10px;
+            height: 200px;
         }
-
+        .line {
+          
+            width: 20px;
+           align-items:center;
+        }
         .body {
             display: flex;
             flex-direction: row;
@@ -55,206 +71,116 @@
             -webkit-flex-wrap: wrap;
             flex-wrap: wrap;
         }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            margin: 40px;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .gridly {
+            position: relative;
+            width: 960px;
+        }
+
+        .brick.small {
+            width: 140px;
+            height: 140px;
+        }
+
+        .brick.large {
+            width: 300px;
+            height: 300px;
+        }
     </style>
+    <script>
+        function Changeworker(id) {
+            layer.open({
+                title: '调换工人',
+                type: 1,
+                content: $('#changeworker'),
+                area: ['400px', '300px'], //宽高
+                fix: false, //不固定
+                maxmin: true,
+                shade: 0.4,
+                btn: ['保存', '关闭'],
+                yes: function (index, layero) {
+                    var params = {
+                        wid: $("#wid").val(),
+                        wname: $("#wid :selected").text(),
+                        id: id
+                    };
+                    $.post("/PaiBan/ChangeWorker", params, function (data) {
+                        if (data.Value == "success") {
+                            layer.msg(data.Text, { icon: 1, time: 1000 }, function () {
+                                location.replace(location.href);
+                            });
+                        } else {
+                            layer.msg(data.Text, { icon: 2, time: 1000 });
+                        }
+                    }, "json");
+                },
+                cancel: function (index) {
+                    layer.close(index);
+                }
+            });
+        }
+        $(function () { $("[data-toggle='tooltip']").tooltip() });
+        function myrefresh() {
+            window.location.reload();
+        }
+        setTimeout('myrefresh()', 1000 * 60 * 60); //指定1秒刷新一次
+    </script>
 </head>
+
+
 <body class="body">
+    @if (Model != null && Model.Count > 0)
+    {
+        var linelist = (List<string>)ViewBag.linelist;
+        foreach (var line in linelist)
+        {
+            var paiban = Model.Where(m => m.LName == line);
 
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">1</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A01工位</text>
+            <div class="gongwei   num" style="width: 20px;align-items:center;">
+                @line
             </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">张三</text>
-            </div>
-        </div>
-    </div>
 
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">2</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A02工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">李四</text>
-            </div>
-        </div>
-    </div>
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">3</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A03工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">王五</text>
-            </div>
-        </div>
-    </div>
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">4</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A04工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">赵六</text>
-            </div>
-        </div>
-    </div>
+            foreach (var item in paiban)
+            {
+                <div class="gongwei">
+                    <div class="img">
+                        <text class="code">@item.StationIndex</text>
+                    </div>
+                    <div class="info">
+                        <img class="ico" src="~/Content/前台.png" />
+                        <div class=" name">
 
-    <div class="gongwei">
-        <div class="img" style="">
-            <text class="num">5</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A01工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">张三</text>
-            </div>
-        </div>
-    </div>
+                            <text class="num">@item.StationName</text>
+                        </div>
+                        <div data-toggle="tooltip" title="点击换人" class=" name" onclick="Changeworker(@item.Id)">
+                            <text class="num">@item.WName</text>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
 
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">6</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A02工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">李四</text>
-            </div>
-        </div>
-    </div>
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">7</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A03工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">王五</text>
-            </div>
-        </div>
-    </div>
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">8</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A04工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">赵六</text>
-            </div>
-        </div>
-    </div>
 
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">9</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A01工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">张三</text>
-            </div>
-        </div>
-    </div>
-
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">10</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A02工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">李四</text>
-            </div>
-        </div>
-    </div>
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">12</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A03工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">王五</text>
-            </div>
-        </div>
-    </div>
-    <div class="gongwei">
-        <div class="img" >
-            <text class="num">12</text>
-        </div>
-        <div style="display:flex;flex-direction:column;margin:10px;justify-content:space-around;align-items: center;">
-            <img class="ico" src="~/Content/前台.png" />
-            <div class=" name">
-                <text class="">工位名称：</text>
-                <text class="num">综合拆解线A04工位</text>
-            </div>
-            <div class=" name">
-                <text class="">员工：</text>
-                <text class="num">赵六</text>
-            </div>
-        </div>
-    </div>
 </body>
+<article class="page-container">
+    <div id="changeworker" class="form form-horizontal" style="display:none;">
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3">可选列表：</label>
+            <div class="formControls col-xs-7 col-sm-7">
+                @Html.DropDownList("wid", @ViewBag.Worker as IEnumerable<SelectListItem>, new { type = "text", @class = "input-text", @value = "", @placeholder = "" })
+            </div>
+        </div>
+
+    </div>
+</article>
 </html>
+

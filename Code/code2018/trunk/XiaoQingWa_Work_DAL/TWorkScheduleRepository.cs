@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using XiaoQingWa_Work_IDAL;
 using XiaoQingWa_Work_Model.Entity;
+using XiaoQingWa_Work_Model.Model;
 
 namespace XiaoQingWa_Work_DAL
 {
@@ -43,7 +44,7 @@ namespace XiaoQingWa_Work_DAL
             return false;
         }
 
-        public bool AddTWorkScheduleTran(TTaskEntity taskEntity, List<TWorkScheduleEntity> list, List<TWorkerEntity> workerEntities)
+        public bool AddTWorkScheduleTran(List<TWorkScheduleEntity> list, List<TWorkerEntity> workerEntities)
         {
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
@@ -52,19 +53,24 @@ namespace XiaoQingWa_Work_DAL
                 {
                     try
                     {
-                        conn.Insert<string>(taskEntity, trans);
+
                         foreach (var item in list)
                         {
                             AddTWorkSchedule(item, conn, trans);
                         }
                         foreach (var worker in workerEntities)
                         {
-                            conn.Update(worker, trans);
+                            var workerScheduleDetail = new WorkerScheduleDetail();
+                            workerScheduleDetail.LineCode = list.FirstOrDefault().LineCode;
+                            workerScheduleDetail.WId = worker.WId;
+                            workerScheduleDetail.StationIndex = worker.OrderIndex;
+
+                            conn.Insert<int>(worker, trans);
                         }
                         trans.Commit();
                         return true;
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         trans.Rollback();
                         return false;
@@ -146,15 +152,54 @@ namespace XiaoQingWa_Work_DAL
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<TWorkScheduleEntity> GetTWorkScheduleList()
+        public List<TWorkScheduleEntity> GetTWorkScheduleList(string billno)
         {
             var mResult = new List<TWorkScheduleEntity>();
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                mResult = conn.GetList<TWorkScheduleEntity>().ToList();
+                var strsql = "select * from tWorkSchedule where BillNO=@BillNO ";
+                var param = new
+                {
+                    BillNO = billno
+                };
+                mResult = conn.Query<TWorkScheduleEntity>(strsql, param).ToList();
             }
             return mResult;
         }
+
+        public List<PaiBanViewModel> GetTWorkScheduleList()
+        {
+            var mResult = new List<PaiBanViewModel>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                var strsql = "select * from tWorkSchedule w inner join  tLine l on w.LineCode=l.LCode where Date>=@StartDate and Date< @EndDate";
+                var param = new
+                {
+                    StartDate = DateTime.Now.Date,
+                    EndDate = DateTime.Now.Date.AddDays(1)
+                };
+                mResult = conn.Query<PaiBanViewModel>(strsql, param).ToList();
+            }
+            return mResult;
+        }
+
+        public List<TWorkScheduleEntity> GetTWorkScheduleList(string linecode, DateTime dateTime)
+        {
+            var mResult = new List<TWorkScheduleEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                var strsql = "select * from tWorkSchedule w where LineCode=@LineCode and  Date>=@StartDate and Date< @EndDate";
+                var param = new
+                {
+                    LineCode = linecode,
+                    StartDate = dateTime.Date,
+                    EndDate = dateTime.Date.AddDays(1)
+                };
+                mResult = conn.Query<TWorkScheduleEntity>(strsql, param).ToList();
+            }
+            return mResult;
+        }
+
         /// <summary>
         /// 更新实体列表
         /// </summary>

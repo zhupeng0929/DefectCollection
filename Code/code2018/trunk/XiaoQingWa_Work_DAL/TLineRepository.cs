@@ -109,6 +109,24 @@ namespace XiaoQingWa_Work_DAL
             return mResult;
         }
         /// <summary>
+        /// 获取类别实体根据ID
+        /// </summary>
+        /// <returns></returns>
+        public TLineEntity GetTLine(string code)
+        {
+            var mResult = new TLineEntity();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                string strSql = "select * from  TLine where LCode = @LCode ";
+                var param = new
+                {
+                    LCode = code
+                };
+                mResult = conn.Query<TLineEntity>(strSql, param).FirstOrDefault();
+            }
+            return mResult;
+        }
+        /// <summary>
         /// 更新实体列表
         /// </summary>
         /// <returns></returns>

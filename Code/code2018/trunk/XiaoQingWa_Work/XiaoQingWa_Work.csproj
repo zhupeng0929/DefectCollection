@@ -58,9 +58,8 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.1.0.0\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PaiBan">
@@ -179,6 +178,7 @@
     <Compile Include="Controllers\StaticController.cs" />
     <Compile Include="Controllers\StationController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
+    <Compile Include="Controllers\TaskManagerController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WorkerController.cs" />
     <Compile Include="Global.asax.cs">
@@ -284,6 +284,8 @@
     <Content Include="plugins\lib\jquery.validation\1.14.0\jquery.validate.js" />
     <Content Include="plugins\lib\jquery.validation\1.14.0\messages_zh.js" />
     <Content Include="plugins\lib\jquery.validation\1.14.0\validate-methods.js" />
+    <Content Include="plugins\lib\jQueryGridly\javascripts\jquery.gridly.js" />
+    <Content Include="plugins\lib\jQueryGridly\stylesheets\jquery.gridly.css" />
     <Content Include="plugins\lib\jquery\1.9.1\jquery.js" />
     <Content Include="plugins\lib\jquery\1.9.1\jquery.min.js" />
     <Content Include="plugins\lib\jselect-1.0.js" />
@@ -306,6 +308,19 @@
     <Content Include="plugins\lib\lightbox2\2.8.1\js\lightbox-plus-jquery.min.js" />
     <Content Include="plugins\lib\lightbox2\2.8.1\js\lightbox.js" />
     <Content Include="plugins\lib\lightbox2\2.8.1\js\lightbox.min.js" />
+    <Content Include="plugins\lib\mutiselect\assets\ba.hashchange.js" />
+    <Content Include="plugins\lib\mutiselect\assets\prettify.css" />
+    <Content Include="plugins\lib\mutiselect\assets\prettify.js" />
+    <Content Include="plugins\lib\mutiselect\assets\style.css" />
+    <Content Include="plugins\lib\mutiselect\multiselectSrc\jquery.multiselect.css" />
+    <Content Include="plugins\lib\mutiselect\multiselectSrc\jquery.multiselect.filter.js" />
+    <Content Include="plugins\lib\mutiselect\multiselectSrc\jquery.multiselect.filter.min.js" />
+    <Content Include="plugins\lib\mutiselect\multiselectSrc\jquery.multiselect.js" />
+    <Content Include="plugins\lib\mutiselect\multiselectSrc\jquery.multiselect.min.js" />
+    <Content Include="plugins\lib\mutiselect\ui\jquery-ui.css" />
+    <Content Include="plugins\lib\mutiselect\ui\jquery-ui.js" />
+    <Content Include="plugins\lib\mutiselect\ui\jquery.ui.core.js" />
+    <Content Include="plugins\lib\mutiselect\ui\jquery.ui.widget.js" />
     <Content Include="plugins\lib\My97DatePicker\4.8\calendar.js" />
     <Content Include="plugins\lib\My97DatePicker\4.8\lang\en.js" />
     <Content Include="plugins\lib\My97DatePicker\4.8\lang\zh-cn.js" />
@@ -1290,6 +1305,8 @@
     <Content Include="plugins\static\h-ui\images\iCheck\Thumbs.db" />
     <Content Include="plugins\static\h-ui\images\ucnter\Thumbs.db" />
     <Content Include="plugins\lib\html5up\control\images\fileType\Thumbs.db" />
+    <Content Include="plugins\lib\jQueryGridly\javascripts\jquery.gridly.js.map" />
+    <Content Include="plugins\lib\jQueryGridly\stylesheets\jquery.gridly.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1344,6 +1361,8 @@
     <Content Include="Views\Static\WorkerResult.cshtml" />
     <Content Include="Views\Static\LineResult.cshtml" />
     <Content Include="Views\PaiBan\PaiBanShow.cshtml" />
+    <Content Include="Views\TaskManager\TaskList.cshtml" />
+    <Content Include="Views\TaskManager\TaskListResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1395,7 +1414,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49381</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

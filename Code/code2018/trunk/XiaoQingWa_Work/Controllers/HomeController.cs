@@ -12,6 +12,7 @@ namespace XiaoQingWa_Work.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.User = this.LoginUser;
             return View();
         }
 

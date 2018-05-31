@@ -40,6 +40,7 @@ namespace XiaoQingWa_Work_Model.Entity
         /// 任务单号
         /// </summary>
         [Key]
+        [Required]
         [Description("任务单号")]
         public string BillNO
         {

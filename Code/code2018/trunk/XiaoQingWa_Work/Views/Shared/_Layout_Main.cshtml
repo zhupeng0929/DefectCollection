@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/plugins/lib/html5up/control/css/zyUpload.css")" />
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/plugins/lib/jquery.confirm/jquery-confirm.min.css")" />
     @RenderSection("Header", false)
+
 </head>
 <body>
     @*<div class="navbar navbar-inverse navbar-fixed-top">
@@ -54,7 +55,7 @@
     <script type="text/javascript" src="@Url.Content("~/plugins/static/h-ui/js/H-ui.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/plugins/static/h-ui.admin/js/H-ui.admin.js")"></script> <!--/_footer 作为公共模版分离出去-->
 
-    <script type="text/javascript"  src="@Url.Content("~/plugins/lib/jquery.confirm/jquery-confirm.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/plugins/lib/jquery.confirm/jquery-confirm.min.js")"></script>
 
     <!--请在下方写此页面业务相关的脚本-->
     <script type="text/javascript" src="@Url.Content("~/plugins/lib/jquery.contextmenu/jquery.contextmenu.r2.js")"></script>
@@ -66,5 +67,23 @@
     <script type="text/javascript" src="@Url.Content("~/plugins/lib/laypage/1.2/laypage.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/plugins/lib/webuploader/0.1.5/webuploader.min.js")"></script>
     @RenderSection("pagescripts", false)
+    <script type="text/javascript">
+
+        document.onkeydown = function (e) {
+            if (!e) {
+                e = window.event;
+            }
+            if ((e.keyCode || e.which) == 13) {
+                debugger;
+                if (window.Search) {
+                    Search()
+                }
+                else {
+
+                }
+            }
+        }
+       
+    </script>
 </body>
 </html>

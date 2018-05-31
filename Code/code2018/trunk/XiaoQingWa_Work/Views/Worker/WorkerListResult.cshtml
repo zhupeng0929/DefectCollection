@@ -30,7 +30,8 @@
                     <td>@Html.DisplayFor(modelItem => item.WNo)</td>
                     <td>@(EnumTypeHelper.GetDescriptionByValue<WorkerSex>(item.WSex ? 1 : 0))</td>
                     <td>@Html.DisplayFor(modelItem => item.WDescript)</td>
-                    <td>@Html.DisplayFor(modelItem => item.LineCode)</td>
+
+                    <td>@(string.Join(",",item.LineList.Select(l=>l.LCode)))</td>
                     <td class="text-l">@Html.DisplayFor(modelItem => item.OrderIndex)</td>
                     <td>@Html.DisplayFor(modelItem => item.RefreshDate)</td>
                     <td class="td-status">

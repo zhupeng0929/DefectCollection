@@ -26,6 +26,16 @@ namespace XiaoQingWa_Work_Model.Entity
         private int _wId = 0;
         private string _lCode = String.Empty;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [Key]
+        [Description("id")]
+        public int Id
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// 工人id
@@ -40,7 +50,6 @@ namespace XiaoQingWa_Work_Model.Entity
         /// <summary>
         /// 流水线编号
         /// </summary>
-        [Key]
         [Description("流水线编号")]
         public string LCode
         {

@@ -4,8 +4,9 @@
 <header class="navbar-wrapper">
     <div class="navbar navbar-fixed-top">
         <div class="container-fluid cl">
-            <a class="logo navbar-logo f-l mr-10 hidden-xs" href="/aboutHui.shtml">H-ui.admin</a> <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="/aboutHui.shtml">H-ui</a>
-            <span class="logo navbar-slogan f-l mr-10 hidden-xs">v3.0</span>
+            <a class="logo navbar-logo f-l mr-10 hidden-xs" href="/aboutHui.shtml">新金桥车间流水线缺陷统计</a> 
+            <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="/aboutHui.shtml">新金桥车间流水线缺陷统计</a>
+            <span class="logo navbar-slogan f-l mr-10 hidden-xs"></span>
             <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:;">&#xe667;</a>
             @*<nav class="nav navbar-nav">
                 <ul class="cl">
@@ -24,10 +25,10 @@
                 <ul class="cl">
                     @*<li>超级管理员</li>*@
                     <li class="dropDown dropDown_hover">
-                        <a href="#" class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
+                        <a href="#" class="dropDown_A">@ViewBag.User.UserName <i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
-                            <li><a href="#">切换账户</a></li>
+                            @*<li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
+                            <li><a href="#">切换账户</a></li>*@
                             <li><a href="@Url.Action("Logout","Account")">退出</a></li>
                         </ul>
                     </li>
@@ -55,6 +56,8 @@
             <dt><i class="Hui-iconfont">&#xe616;</i> 工作管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
+                    <li><a data-href="@Url.Action("TaskList","TaskManager")" data-title="任务单列表" href="javascript:void(0)">任务单列表</a></li>
+                    <li><a target="_blank" href="@Url.Action("PaiBanShow","PaiBan")">排班展示</a></li>
                     <li><a data-href="@Url.Action("LineList","Line")" data-title="流水线管理" href="javascript:void(0)">流水线管理</a></li>
                     <li><a data-href="@Url.Action("StationList","Station")" data-title="工位管理" href="javascript:void(0)">工位管理</a></li>
                     <li><a data-href="@Url.Action("CounterList","Counter")" data-title="设备管理" href="javascript:void(0)">设备管理</a></li>
@@ -90,10 +93,17 @@
                 </ul>
             </dd>
         </dl>
-        <dl id="menu-product">
-            <dt><i class="Hui-iconfont">&#xe620;</i> <a data-href="product-brand.html" data-title="今日座次" href="javascript:void(0)">今日座次</a><i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            
-        </dl>
+        @*<dl id="menu-product">
+            <dt><i class="Hui-iconfont">&#xe620;</i>任务单管理 <i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+
+            <dd>
+                <ul>
+
+                    
+                </ul>
+            </dd>
+           
+        </dl>*@
 
         @*<dl id="menu-article">
             <dt><i class="Hui-iconfont">&#xe616;</i> 资讯管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>

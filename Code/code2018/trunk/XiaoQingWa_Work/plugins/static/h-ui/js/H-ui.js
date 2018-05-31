@@ -2358,12 +2358,12 @@ function stopDefault(e) {
 		*
 		* @param  {event} event
 		*/
-			_onKeyUp: function(e) {
-				var evt = e || window.event;
-				if (evt.keyCode === 13) {
-					this.toggle();
-				}
-			},
+			//_onKeyUp: function(e) {
+				//var evt = e || window.event;
+				//if (evt.keyCode === 13) {
+				//	this.toggle();
+				//}
+			//},
 
 			/**
 		* Adds the needed CSS transitions if animations are enabled

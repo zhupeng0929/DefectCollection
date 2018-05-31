@@ -31,3 +31,6 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 Code/.vs/*
 Code/packages/*
+Code/code2018/.svn/*
+Code/code2018/trunk/.vs/*
+Code/code2018/trunk/packages/*

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<XiaoQingWa_Work_Model.Entity.TTaskEntity>
+@using XiaoQingWa_Work_Utility
+@using XiaoQingWa_Work_Model.Enum
+
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="50">任务单编码</th>
+            <th width="100">任务单名称</th>
+            <th width="50">流水线编码</th>
+            <th width="50">物料名称</th>
+            <th width="100">物料代码</th>
+            <th width="100">物料数量</th>
+            <th width="100">好件统计</th>
+            <th width="100">坏件统计</th>
+            <th width="100">合计</th>
+            <th width="100">汇总差额</th>
+            @*<th width="100">操作</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+        <tr class="text-c">
+            <td>@Html.DisplayFor(modelItem => item.BillNO)</td>
+            <td>@Html.DisplayFor(modelItem => item.TName)</td>
+            <td>@Html.DisplayFor(modelItem => item.LineCode)</td>
+            <td>@Html.DisplayFor(modelItem => item.ItemName)</td>
+            <td>@Html.DisplayFor(modelItem => item.ItemCode)</td>
+
+            <td>@Html.DisplayFor(modelItem => item.Qty)</td>
+            <td>@Html.DisplayFor(modelItem => item.GoodCount)</td>
+            <td>@Html.DisplayFor(modelItem => item.BadCount)</td>
+            <td>@Html.Display((item.GoodCount + item.BadCount).ToString())</td>
+            <td>@Html.DisplayFor(modelItem => item.DiffCount)</td>
+            @*<td class="td-manage">
+                <a title="查看排班" target="_blank" href="/PaiBan/PaiBanShow?billno=@item.BillNO" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+            </td>*@
+        </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan='8'>
+                    <span style='color: #FF8C40'>暂无数据显示</span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section pagescripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.table-sort').dataTable({
+                "aaSorting": [[1, "desc"]],//默认第几个排序
+                "bStateSave": true,//状态保存
+                "aoColumnDefs": [
+                    //{"bVisible": false, "aTargets": [ 1 ]}, //控制列的隐藏显示
+                    { "orderable": false, "aTargets": [0,5, 6] }// 制定列不参与排序
+                ]
+            });
+        });
+
+    </script>
+
+}

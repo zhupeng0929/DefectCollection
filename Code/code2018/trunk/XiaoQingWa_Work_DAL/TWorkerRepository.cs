@@ -52,6 +52,47 @@ namespace XiaoQingWa_Work_DAL
             else
                 return false;
         }
+
+        public bool AddTWorker(TWorkerEntity model, string[] LineCode)
+        {
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                conn.Open();
+                using (IDbTransaction tran = conn.BeginTransaction())
+                {
+                    try
+                    {
+
+                        var result = conn.Insert<int>(model, tran);
+
+                        foreach (var code in LineCode)
+                        {
+
+                            var linemode = new TWorkerLineEntity()
+                            {
+                                WId = result,
+                                LCode = code
+
+                            };
+
+                            conn.Insert<int>(linemode, tran);
+                        }
+                        tran.Commit();
+                        return true;
+                    }
+
+                    catch
+                    {
+                        tran.Rollback();
+                        return false;
+                    }
+                }
+            }
+        }
+
+
+
+
         /// <summary>
         /// 删除数据
         /// </summary>
@@ -129,9 +170,31 @@ namespace XiaoQingWa_Work_DAL
             int row;
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                row = conn.Update(entity);
+                conn.Open();
+                using (IDbTransaction tran = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        row = conn.Update(entity, tran);
+                        if (entity.LineList != null)
+                        {
+                            conn.DeleteList<TWorkerLineEntity>(new { WId = entity.WId }, tran);
+                            entity.LineList.ForEach(l => { conn.Insert(l, tran); });
+                        }
+                        else
+                        {
+                            conn.DeleteList<TWorkerLineEntity>(new { WId = entity.WId }, tran);
+                        }
+                        tran.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        tran.Rollback();
+                        return false;
+                    }
+                }
             }
-            return row > 0;
         }
         /// <summary>
         /// 更新实体列表--事物
@@ -160,8 +223,18 @@ namespace XiaoQingWa_Work_DAL
                 {
                     keyWords = workerQuery.keyWords
                 };
-
                 mResult = conn.Query<TWorkerEntity>(strSql.ToString(), param).ToList();
+                if (mResult != null)
+                {
+                    mResult.ForEach(t =>
+                    {
+                        var workerLines = new List<TWorkerLineEntity>();
+                        var str = "select * from tWorkerLine where WId=@WId";
+                        var wlparam = new { WId = t.WId };
+                        workerLines = conn.Query<TWorkerLineEntity>(str, wlparam).ToList();
+                        t.LineList = workerLines;
+                    });
+                }
             }
             return mResult;
         }
@@ -191,6 +264,42 @@ namespace XiaoQingWa_Work_DAL
             }
             return mResult;
         }
+
+
+        /// <summary>
+        /// 获取可参与排班的工人
+        /// </summary>
+        /// <param name="linecode"></param>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public List<TWorkerEntity> GetTTaskWorkerListByLineCode(string linecode, DateTime dateTime)
+        {
+            var mResult = new List<TWorkerEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                if (!string.IsNullOrWhiteSpace(linecode))
+                {
+                    StringBuilder strSql = new StringBuilder(@"Select w.WId,w.WName,isnull(d.StationIndex,0) OrderIndex from tWorker   w
+left join [dbo].[tWorkerScheduleDetail] d on w.WId=d.WID
+inner join [dbo].[tWorkerLine] wl on wl.WId=w.WId and   wl.LCode=@LineCode
+where 1=1 and w.WId not in(select [WId] from [dbo].[tWorkSchedule] where LineCode=@LineCode and Date>=@StartDate and Date<@Enddate ) ");
+
+
+                    var param = new
+                    {
+                        LineCode = linecode,
+                        StartDate = dateTime.Date,
+                        Enddate = dateTime.Date.AddDays(1)
+                    };
+
+                    mResult = conn.Query<TWorkerEntity>(strSql.ToString(), param).ToList();
+                }
+            }
+            return mResult;
+        }
+
+
+
         /// <summary>
         /// 
         /// </summary>

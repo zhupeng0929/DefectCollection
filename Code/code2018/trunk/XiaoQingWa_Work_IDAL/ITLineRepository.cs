@@ -10,6 +10,7 @@ namespace XiaoQingWa_Work_IDAL
         bool DelTLine(int id);
         bool DelTLineBatch(int[] ids);
         TLineEntity GetTLine(int id);
+        TLineEntity GetTLine(string code);
         bool UpdateTLine(TLineEntity entity);
         bool UpdateTLine(TLineEntity entity, IDbConnection conn, IDbTransaction trans);
 
