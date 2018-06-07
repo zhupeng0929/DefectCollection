@@ -163,6 +163,7 @@ namespace XiaoQingWa_Work_Model.Entity
         [Dapper.ReadOnly(true)]
         public int StationId { get; set; }
 
+       
     }
     public class StationQuery
     {

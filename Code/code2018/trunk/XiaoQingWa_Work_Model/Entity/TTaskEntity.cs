@@ -41,6 +41,7 @@ namespace XiaoQingWa_Work_Model.Entity
         /// </summary>
         [Key]
         [Required]
+        [IgnoreUpdate]
         [Description("任务单号")]
         public string BillNO
         {
@@ -152,12 +153,14 @@ namespace XiaoQingWa_Work_Model.Entity
         /// 操作类型0-新增，1-修改，2-删除
         /// </summary>
         [NotMapped]
-       
+
         public int OperateType { get; set; }
 
         /// <summary>
         /// 0-未启动，1-启动
         /// </summary>
         public int Status { get; set; }
+
+        public bool IsOrder { get; set; } = false;
     }
 }

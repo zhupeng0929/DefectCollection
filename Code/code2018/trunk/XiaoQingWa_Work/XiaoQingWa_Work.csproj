@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>XiaoQingWa_Work</RootNamespace>
     <AssemblyName>XiaoQingWa_Work</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -68,7 +68,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -82,7 +81,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
@@ -129,7 +127,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -195,6 +192,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\back.png" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\前台.png" />
@@ -284,8 +282,6 @@
     <Content Include="plugins\lib\jquery.validation\1.14.0\jquery.validate.js" />
     <Content Include="plugins\lib\jquery.validation\1.14.0\messages_zh.js" />
     <Content Include="plugins\lib\jquery.validation\1.14.0\validate-methods.js" />
-    <Content Include="plugins\lib\jQueryGridly\javascripts\jquery.gridly.js" />
-    <Content Include="plugins\lib\jQueryGridly\stylesheets\jquery.gridly.css" />
     <Content Include="plugins\lib\jquery\1.9.1\jquery.js" />
     <Content Include="plugins\lib\jquery\1.9.1\jquery.min.js" />
     <Content Include="plugins\lib\jselect-1.0.js" />
@@ -1065,7 +1061,6 @@
     <Content Include="plugins\static\h-ui.admin\images\admin-loginform-bg.png" />
     <Content Include="plugins\static\h-ui.admin\images\cn.gif" />
     <Content Include="plugins\static\h-ui.admin\images\loading.gif" />
-    <Content Include="plugins\static\h-ui.admin\images\logo.png" />
     <Content Include="plugins\static\h-ui.admin\images\um.gif" />
     <Content Include="plugins\static\h-ui.admin\js\de_DE.txt" />
     <Content Include="plugins\static\h-ui.admin\js\H-ui.admin.js" />
@@ -1305,8 +1300,6 @@
     <Content Include="plugins\static\h-ui\images\iCheck\Thumbs.db" />
     <Content Include="plugins\static\h-ui\images\ucnter\Thumbs.db" />
     <Content Include="plugins\lib\html5up\control\images\fileType\Thumbs.db" />
-    <Content Include="plugins\lib\jQueryGridly\javascripts\jquery.gridly.js.map" />
-    <Content Include="plugins\lib\jQueryGridly\stylesheets\jquery.gridly.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1318,7 +1311,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

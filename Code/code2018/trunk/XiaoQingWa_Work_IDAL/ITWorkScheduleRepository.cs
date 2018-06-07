@@ -19,8 +19,8 @@ namespace XiaoQingWa_Work_IDAL
         bool AddTWorkScheduleTran( List<TWorkScheduleEntity> list,List<TWorkerEntity> workerEntities);
         List<TWorkScheduleEntity> GetTWorkScheduleList(string billno);
         List<PaiBanViewModel> GetTWorkScheduleList();
-
         List<TWorkScheduleEntity> GetTWorkScheduleList(string linecode,DateTime dateTime);
+        List<TWorkScheduleEntity> GetTWorkScheduleList(string stationCode, string linecode, string date);
     }
 }
 

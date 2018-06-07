@@ -17,7 +17,7 @@ namespace XiaoQingWa_Work.Controllers
        
         public ActionResult TaskListResult(LineQuery lineQuery)
         {
-            var taskList = tTaskRepository.GetTTaskList();
+            var taskList = tTaskRepository.GetTTaskList(lineQuery);
             return View(taskList);
         }
     }

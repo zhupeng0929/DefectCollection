@@ -8,12 +8,14 @@
             <th width="50">任务单编码</th>
             <th width="100">任务单名称</th>
             <th width="50">流水线编码</th>
+
+            <th width="50">任务时间</th>
             <th width="50">物料名称</th>
             <th width="100">物料代码</th>
             <th width="100">物料数量</th>
             <th width="100">好件统计</th>
             <th width="100">坏件统计</th>
-            <th width="100">合计</th>
+            @*<th width="100">合计</th>*@
             <th width="100">汇总差额</th>
         </tr>
     </thead>
@@ -27,17 +29,34 @@
                     <td>@Html.DisplayFor(modelItem => item.BillNO)</td>
                     <td>@Html.DisplayFor(modelItem => item.TName)</td>
                     <td>@Html.DisplayFor(modelItem => item.LineCode)</td>
+                    <td>@item.StartDateTime.ToShortDateString()</td>
+
                     <td>@Html.DisplayFor(modelItem => item.ItemName)</td>
                     <td>@Html.DisplayFor(modelItem => item.ItemCode)</td>
 
                     <td>@Html.DisplayFor(modelItem => item.Qty)</td>
                     <td>@Html.DisplayFor(modelItem => item.GoodCount)</td>
                     <td>@Html.DisplayFor(modelItem => item.BadCount)</td>
-                    <td>@Html.Display((item.GoodCount + item.BadCount).ToString())</td>
                     <td>@Html.DisplayFor(modelItem => item.DiffCount)</td>
 
                 </tr>
             }
+                <tr class="text-c">
+
+                    <td>汇总</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+
+                    <td>--</td>
+                    <td>--</td>
+
+                    <td>@Model.Sum(i => i.Qty)</td>
+                    <td>@Model.Sum(i => i.GoodCount)</td>
+                    <td>@Model.Sum(i => i.BadCount)</td>
+                    <td>@Model.Sum(i => i.DiffCount)</td>
+
+                </tr>
         }
 
     </tbody>

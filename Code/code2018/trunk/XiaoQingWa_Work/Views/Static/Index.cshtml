@@ -14,12 +14,12 @@
 <div class="page-container">
     <form onsubmit="return false"  method="post" class="form form-horizontal" id="form">
         <div class="text-l">
-            @*日期范围：
-                <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" name="datemin" class="input-text Wdate" style="width:120px;">
-                -
-                <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" name="datemax" class="input-text Wdate" style="width:120px;">*@
+            日期范围：
+            <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'startTime\')||\'%y-%M-%d\'}' })" id="startTime" name="startTime" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'endTime\')}',maxDate:'%y-%M-%d' })" id="endTime" name="endTime" class="input-text Wdate" style="width:120px;">
             统计维度：
-            <span class="select-box" style="width:250px">
+            <span class="select-box" style="width:150px">
                 @Html.DropDownList("StaticType", new List<SelectListItem>() {
                new SelectListItem() { Text = "任务单", Value = "0" },
                new SelectListItem() { Text = "员工", Value = "1" },
@@ -28,23 +28,23 @@
             </span>
 
             任务单：
-            <span class="select-box" style="width:250px">
-                @Html.DropDownList("BillNO", ViewBag.Task as List<SelectListItem>, new { @class = "select" })
-            </span>
+            <input type="text" class="input-text" style="width:150px" placeholder="请输入任务编号" id="BillNO" name="BillNO">
+
             流水线：
-            <span class="select-box" style="width:250px">
+            <span class="select-box" style="width:150px">
                 @Html.DropDownList("LineCode", ViewBag.Line as List<SelectListItem>, new { @class = "select" })
             </span>
             工位：
-            <span class="select-box" style="width:250px">
+            <span class="select-box" style="width:150px">
                 @Html.DropDownList("StationCode", ViewBag.Station as List<SelectListItem>, new { @class = "select" })
             </span>
             员工：
-            <span class="select-box" style="width:250px">
+            <span class="select-box" style="width:150px">
                 @Html.DropDownList("WId", ViewBag.Worker as List<SelectListItem>, new { @class = "select" })
             </span>
             @* <input type="text" class="input-text" style="width:250px" placeholder="输入员工姓名、编号" id="keyWords" name="keyWords">*@
             <button type="button" class="btn btn-success radius" id="searchBtn" name="" onclick="Search()"><i class="Hui-iconfont">&#xe665;</i> 搜记录</button>
+            <button type="button" class="btn btn-success radius" id="searchBtn" name="" onclick="Export()"><i class="Hui-iconfont">&#xe665;</i> 导出表格</button>
         </div>
     </form>
     @*<div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -66,7 +66,11 @@
             Search();
         });
        
-
+        function Export() {
+           
+            window.open("/Static/Export?" + $("form").serialize());
+           
+        }
         function Search() {
             var params = $("form").serialize();
             var url = '@Url.Action("StaticResult", "Static")';

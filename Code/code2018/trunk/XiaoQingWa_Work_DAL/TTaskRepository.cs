@@ -121,6 +121,40 @@ namespace XiaoQingWa_Work_DAL
             }
             return mResult;
         }
+
+        public List<TTaskEntity> GetTTaskList(LineQuery lineQuery)
+        {
+            var mResult = new List<TTaskEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                StringBuilder strSql = new StringBuilder("Select * from tTask  where 1=1 ");
+
+
+                if (!string.IsNullOrWhiteSpace(lineQuery.keyWords))
+                {
+                    strSql.Append(" and  (BillNO=@keyWords or TName=@keyWords or LineCode = @keyWords or ItemCode=@keyWords) ");
+                }
+                var param = new
+                {
+                    keyWords = lineQuery.keyWords
+                };
+
+                mResult = conn.Query<TTaskEntity>(strSql.ToString(),param).ToList();
+            }
+            return mResult;
+        }
+        public List<TTaskEntity> GetTOrderTaskList()
+        {
+            var mResult = new List<TTaskEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                StringBuilder strSql = new StringBuilder("Select * from tTask  where 1=1 and  IsOrder=0 ");
+                
+                mResult = conn.Query<TTaskEntity>(strSql.ToString()).ToList();
+            }
+            return mResult;
+        }
+
         /// <summary>
         /// 更新实体列表
         /// </summary>
@@ -144,5 +178,22 @@ namespace XiaoQingWa_Work_DAL
             row = conn.Update(entity, trans);
             return row > 0;
         }
+
+        /// <summary>
+        /// 根据条件获取列表
+        /// </summary>
+        /// <returns></returns>
+        public List<TTaskEntity> GetTTaskList(string sql)
+        {
+            var mResult = new List<TTaskEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+                mResult = conn.GetList<TTaskEntity>(sql).ToList();
+            }
+            return mResult;
+        }
+
+
+
     }
 }

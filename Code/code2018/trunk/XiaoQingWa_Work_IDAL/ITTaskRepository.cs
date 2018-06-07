@@ -12,6 +12,10 @@ namespace XiaoQingWa_Work_IDAL
         TTaskEntity GetTTask(int id);
         List<TTaskEntity> GetTTaskList();
         bool UpdateTTask(TTaskEntity entity);
+        List<TTaskEntity> GetTTaskList(LineQuery lineQuery);
         bool UpdateTTask(TTaskEntity entity, IDbConnection conn, IDbTransaction trans);
+        List<TTaskEntity> GetTTaskList(string sql);
+        List<TTaskEntity> GetTOrderTaskList();
+
     }
 }

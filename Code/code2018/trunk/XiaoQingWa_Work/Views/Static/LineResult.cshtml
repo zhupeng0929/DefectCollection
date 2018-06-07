@@ -7,6 +7,7 @@
         <tr class="text-c">
             <th width="50">流水线编码</th>
             <th width="50">流水线名称</th>
+            <th width="50">总量</th>
             <th width="100">好件统计</th>
             <th width="100">坏件统计</th>
             <th width="100">合计</th>
@@ -21,12 +22,22 @@
                 <tr class="text-c">
                     <td>@Html.DisplayFor(modelItem => item.LCode)</td>
                     <td>@Html.DisplayFor(modelItem => item.LName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Qty)</td>
                     <td>@Html.DisplayFor(modelItem => item.GoodCount)</td>
                     <td>@Html.DisplayFor(modelItem => item.BadCount)</td>
-                    <td>@Html.DisplayFor(modelItem => item.GoodCount + item.BadCount)</td>
-                    <td>@Html.DisplayFor(modelItem => item.DiffCount)</td>
+                    <td> @(item.GoodCount + item.BadCount)</td>
+                    <td>@(item.Qty - item.GoodCount - item.BadCount)</td>
                 </tr>
             }
+                <tr class="text-c">
+                    <td>汇总</td>
+                    <td>--</td>
+                    <td>@Model.Sum(i => i.Qty)</td>
+                    <td>@Model.Sum(i => i.GoodCount)</td>
+                    <td>@Model.Sum(i => i.BadCount)</td>
+                    <td>@(Model.Sum(i => i.GoodCount) + Model.Sum(i => i.BadCount))</td>
+                    <td>@(Model.Sum(i => i.Qty) - Model.Sum(i => i.GoodCount) - Model.Sum(i => i.BadCount))</td>
+                </tr>
         }
 
     </tbody>

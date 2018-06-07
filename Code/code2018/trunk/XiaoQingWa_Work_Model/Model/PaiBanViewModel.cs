@@ -19,6 +19,7 @@ namespace XiaoQingWa_Work_Model.Model
             set;
         }
 
+        public string TName { get; set; }
 
 
     }

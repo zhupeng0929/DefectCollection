@@ -23,7 +23,7 @@ namespace XiaoQingWa_Work_DAL
 
         }
 
-        public List<LineStatic> StaticByLine(TRecordDetailEntity taskEntity)
+        public List<LineStatic> StaticByLine(StsticQuery taskEntity)
         {
 
             var mResult = new List<LineStatic>();
@@ -32,10 +32,10 @@ namespace XiaoQingWa_Work_DAL
                 StringBuilder strSql = new StringBuilder(@"SELECT l.LCode,l.LName,t.Qty,
 SUM(case CountType when '好件' then r.Count else 0 end) GoodCount,
 SUM(case CountType when '坏件' then r.Count else 0 end) BadCount
-  FROM[alhbFaultCountDB].[dbo].[tRecordDetail] r
-  inner join[alhbFaultCountDB].[dbo].[tLine]  l on l.LCode = r.LineCode
-  inner join[alhbFaultCountDB].[dbo].[tTask] t on t.LineCode = r.LineCode
-  where r.Status = 0
+  FROM [dbo].[tRecordDetail] r
+  inner join [dbo].[tLine]  l on l.LCode = r.LineCode
+  inner join [dbo].[tTask] t on t.LineCode = r.LineCode
+  where r.Status = 1 and r.BillNO!=''
 ");
                 if (!string.IsNullOrWhiteSpace(taskEntity.BillNO))
                 {
@@ -52,6 +52,14 @@ SUM(case CountType when '坏件' then r.Count else 0 end) BadCount
                 if (taskEntity.WId > 0)
                 {
                     strSql.Append(" and  r.WId>=@WId ");
+                }
+                if (taskEntity.startTime != null && taskEntity.startTime != DateTime.MinValue)
+                {
+                    strSql.Append(" and  t.StartDateTime>=@startTime ");
+                }
+                if (taskEntity.endTime != null && taskEntity.endTime != DateTime.MinValue)
+                {
+                    strSql.Append(" and  t.EndDateTime<=@endTime ");
                 }
                 strSql.Append("   group by  l.LCode, l.LName, t.Qty ");
                 var param = new
@@ -60,6 +68,9 @@ SUM(case CountType when '坏件' then r.Count else 0 end) BadCount
                     taskEntity.LineCode,
                     taskEntity.StationCode,
                     taskEntity.WId,
+                    taskEntity.startTime,
+                    taskEntity.endTime
+
                 };
 
                 mResult = conn.Query<LineStatic>(strSql.ToString(), param).ToList();
@@ -67,19 +78,19 @@ SUM(case CountType when '坏件' then r.Count else 0 end) BadCount
             return mResult;
         }
 
-        public List<TTaskEntity> StaticByTask(TRecordDetailEntity taskEntity)
+        public List<TTaskEntity> StaticByTask(StsticQuery taskEntity)
         {
 
             var mResult = new List<TTaskEntity>();
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                StringBuilder strSql = new StringBuilder(@"SELECT t.BillNO,t.TName,t.LineCode,t.ItemName,t.ItemCode,t.Qty,
+                StringBuilder strSql = new StringBuilder(@"SELECT t.BillNO,t.TName,t.LineCode,t.ItemName,t.ItemCode,t.Qty,t.StartDateTime,
 SUM(case CountType when '好件' then r.Count else 0 end) GoodCount,
-SUM(case CountType when '坏件' then r.Count else 0 end) BadCount
-  FROM[alhbFaultCountDB].[dbo].[tRecordDetail] r
-  inner join[alhbFaultCountDB].[dbo].[tLine]  l on l.LCode = r.LineCode
-  inner join[alhbFaultCountDB].[dbo].[tTask] t on t.LineCode = r.LineCode
-  where r.Status = 0
+SUM(case CountType when '坏件' then r.Count else 0 end) BadCount,t.DiffCount 
+  FROM [dbo].[tRecordDetail] r
+  inner join [dbo].[tLine]  l on l.LCode = r.LineCode
+  inner join [dbo].[tTask] t on t.LineCode = r.LineCode
+  where r.Status = 1 and r.BillNO!=''
 ");
                 if (!string.IsNullOrWhiteSpace(taskEntity.BillNO))
                 {
@@ -97,13 +108,23 @@ SUM(case CountType when '坏件' then r.Count else 0 end) BadCount
                 {
                     strSql.Append(" and  r.WId>=@WId ");
                 }
-                strSql.Append("   group by	 t.BillNO,t.TName,t.LineCode,t.ItemName,t.ItemCode,t.Qty ");
+                if (taskEntity.startTime != null&&taskEntity.startTime!=DateTime.MinValue)
+                {
+                    strSql.Append(" and  t.StartDateTime>=@startTime ");
+                }
+                if (taskEntity.endTime != null && taskEntity.endTime != DateTime.MinValue)
+                {
+                    strSql.Append(" and  t.EndDateTime<=@endTime ");
+                }
+                strSql.Append("   group by	 t.BillNO,t.TName,t.LineCode,t.ItemName,t.ItemCode,t.Qty,t.DiffCount,t.StartDateTime ");
                 var param = new
                 {
                     taskEntity.BillNO,
                     taskEntity.LineCode,
                     taskEntity.StationCode,
                     taskEntity.WId,
+                    taskEntity.startTime,
+                    taskEntity.endTime
                 };
 
                 mResult = conn.Query<TTaskEntity>(strSql.ToString(), param).ToList();
@@ -111,19 +132,19 @@ SUM(case CountType when '坏件' then r.Count else 0 end) BadCount
             return mResult;
         }
 
-        public List<WorkerStatic> StaticByWorker(TRecordDetailEntity taskEntity)
+        public List<WorkerStatic> StaticByWorker(StsticQuery taskEntity)
         {
             var mResult = new List<WorkerStatic>();
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                StringBuilder strSql = new StringBuilder(@"SELECT w.WNo,w.WName,r.BillNO TaskCode,COUNT(distinct r.BillNO)TaskCount,
+                StringBuilder strSql = new StringBuilder(@"SELECT w.WNo,w.WName,r.BillNO TaskCode,t.TName TaskName,t.StartDateTime,COUNT(distinct r.BillNO)TaskCount,
 SUM(case CountType when '好件' then r.Count else 0 end) GoodCount,
 SUM(case CountType when '坏件' then r.Count else 0 end) BadCount
-  FROM[alhbFaultCountDB].[dbo].[tRecordDetail] r
-  inner join[alhbFaultCountDB].[dbo].[tLine]  l on l.LCode = r.LineCode
-  inner join[alhbFaultCountDB].[dbo].[tTask] t on t.LineCode = r.LineCode
-  inner join [alhbFaultCountDB].[dbo].[tWorker] w on w.WId=r.WId
-  where r.Status = 0
+  FROM [dbo].[tRecordDetail] r
+  inner join [dbo].[tLine]  l on l.LCode = r.LineCode
+  inner join [dbo].[tTask] t on t.LineCode = r.LineCode
+  inner join  [dbo].[tWorker] w on w.WId=r.WId
+  where r.Status = 1 and r.BillNO!=''
 ");
                 if (!string.IsNullOrWhiteSpace(taskEntity.BillNO))
                 {
@@ -141,13 +162,23 @@ SUM(case CountType when '坏件' then r.Count else 0 end) BadCount
                 {
                     strSql.Append(" and  r.WId>=@WId ");
                 }
-                strSql.Append("     group by	w.WNo,w.WName,r.BillNO");
+                if (taskEntity.startTime != null && taskEntity.startTime != DateTime.MinValue)
+                {
+                    strSql.Append(" and  t.StartDateTime>=@startTime ");
+                }
+                if (taskEntity.endTime != null && taskEntity.endTime != DateTime.MinValue)
+                {
+                    strSql.Append(" and  t.EndDateTime<=@endTime ");
+                }
+                strSql.Append("     group by	w.WNo,w.WName,r.BillNO,t.TName,t.StartDateTime");
                 var param = new
                 {
                     taskEntity.BillNO,
                     taskEntity.LineCode,
                     taskEntity.StationCode,
                     taskEntity.WId,
+                    taskEntity.startTime,
+                    taskEntity.endTime
                 };
 
                 mResult = conn.Query<WorkerStatic>(strSql.ToString(), param).ToList();

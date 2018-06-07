@@ -8,6 +8,7 @@ namespace XiaoQingWa_Work_IDAL
         bool AddTCounter(TCounterEntity model);
         bool AddTCounter(TCounterEntity model, IDbConnection conn, IDbTransaction trans);
         bool DelTCounter(int id);
+        bool DelTCounter(string  Btnid);
         bool DelTCounterBatch(int[] ids);
         TCounterEntity GetTCounter(int id);
         List<TCounterEntity> GetTCounterList();

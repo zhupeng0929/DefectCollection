@@ -65,6 +65,7 @@ namespace XiaoQingWa_Work_DAL
                             workerScheduleDetail.WId = worker.WId;
                             workerScheduleDetail.StationIndex = worker.OrderIndex;
 
+                            conn.Insert<int>(workerScheduleDetail, trans);
                             conn.Insert<int>(worker, trans);
                         }
                         trans.Commit();
@@ -172,7 +173,7 @@ namespace XiaoQingWa_Work_DAL
             var mResult = new List<PaiBanViewModel>();
             using (IDbConnection conn = new SqlConnection(GetConnstr))
             {
-                var strsql = "select * from tWorkSchedule w inner join  tLine l on w.LineCode=l.LCode where Date>=@StartDate and Date< @EndDate";
+                var strsql = "select w.*,l.LName,t.TName from tWorkSchedule w inner join  tLine l on w.LineCode=l.LCode inner join  tTask t on t.BillNO=w.BillNO where Date>=@StartDate and Date< @EndDate";
                 var param = new
                 {
                     StartDate = DateTime.Now.Date,
@@ -199,7 +200,23 @@ namespace XiaoQingWa_Work_DAL
             }
             return mResult;
         }
-
+        public List<TWorkScheduleEntity> GetTWorkScheduleList(string stationCode,  string linecode, string date)
+        {
+            var mResult = new List<TWorkScheduleEntity>();
+            using (IDbConnection conn = new SqlConnection(GetConnstr))
+            {
+               
+                var strsql = "select * from tWorkSchedule w where StationCode=@StationCode and LineCode=@LineCode and  Date=@Date";
+                var param = new
+                {
+                    StationCode= stationCode,
+                    LineCode = linecode,
+                    Date = date
+                };
+                mResult = conn.Query<TWorkScheduleEntity>(strsql, param).ToList();
+            }
+            return mResult;
+        }
         /// <summary>
         /// 更新实体列表
         /// </summary>

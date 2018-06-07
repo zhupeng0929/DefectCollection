@@ -11,18 +11,18 @@ namespace XiaoQingWa_Work_IDAL
         /// </summary>
         /// <param name="taskEntity"></param>
         /// <returns></returns>
-        List<TTaskEntity> StaticByTask(TRecordDetailEntity taskEntity);
+        List<TTaskEntity> StaticByTask(StsticQuery taskEntity);
         /// <summary>
         /// 根据工人统计
         /// </summary>
         /// <param name="taskEntity"></param>
         /// <returns></returns>
-        List<WorkerStatic> StaticByWorker(TRecordDetailEntity taskEntity);
+        List<WorkerStatic> StaticByWorker(StsticQuery taskEntity);
         /// <summary>
         /// 根据流水线统计
         /// </summary>
         /// <param name="taskEntity"></param>
         /// <returns></returns>
-        List<LineStatic> StaticByLine(TRecordDetailEntity taskEntity);
+        List<LineStatic> StaticByLine(StsticQuery taskEntity);
     }
 }

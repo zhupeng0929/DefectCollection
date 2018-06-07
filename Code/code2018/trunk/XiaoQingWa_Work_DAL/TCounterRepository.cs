@@ -73,6 +73,21 @@ namespace XiaoQingWa_Work_DAL
             }
             return false;
         }
+        public bool DelTCounter(string btnid)
+        {
+            if (!string.IsNullOrEmpty(btnid))
+            {
+                using (IDbConnection conn = new SqlConnection(GetConnstr))
+                {
+                    string strSql = "delete from TCounter where CountNo=@btnid";
+                    var param = new { CountNo = btnid };
+                    var result = conn.Execute(strSql, param);
+                    if (result > 0)
+                        return true;
+                }
+            }
+            return false;
+        }
         /// <summary>
         /// 批量删除数据
         /// </summary>

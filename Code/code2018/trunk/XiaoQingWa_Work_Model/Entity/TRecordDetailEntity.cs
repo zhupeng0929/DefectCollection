@@ -187,4 +187,10 @@ namespace XiaoQingWa_Work_Model.Entity
     {
         public string keyWords { get; set; }
     }
+    public class StsticQuery : TRecordDetailEntity
+    {
+        public DateTime startTime { get; set; }
+
+        public DateTime endTime { get; set; }
+    }
 }

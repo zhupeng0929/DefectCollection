@@ -18,7 +18,8 @@ namespace XiaoQingWa_Work.Controllers
 
 
             var list = tWorkScheduleRepository.GetTWorkScheduleList().OrderBy(s => s.LineCode).OrderBy(s => s.StationIndex).ToList();
-            var linelist = list.Select(s => s.LName).Distinct().ToList();
+
+            var linelist = tLineRepository.GetList().OrderBy(s => s.LCode).Select(s => s.LName).Distinct().ToList();
             var workerList = CommonHelper.SelectListEntity("WId", "WName", tWorkerRepository.GetTWorkerList(), null, false);
             workerList.Insert(0, new SelectListItem { Text = "--请选择--", Value = "-1" });
             ViewBag.Worker = workerList;

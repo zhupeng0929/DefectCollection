@@ -1,8 +1,5 @@
 ﻿
-@{
-    Layout = null;
 
-}
 @model List<XiaoQingWa_Work_Model.Model.PaiBanViewModel>
 <!DOCTYPE html>
 
@@ -14,7 +11,7 @@
     <script src="~/plugins/static/h-ui.admin/js/H-ui.admin.js"></script>
     <link href="~/plugins/static/h-ui.admin/css/H-ui.admin.css" rel="stylesheet" />
     <link href="~/plugins/static/h-ui/css/H-ui.min.css" rel="stylesheet" />
-    <title>今日座次安排</title>
+    <title>新金桥车间流水线工位安排表;@DateTime.Now.ToLongDateString()</title>
     <style>
         .ico {
             width: 100px;
@@ -22,14 +19,14 @@
         }
 
         .img {
-            width: 60px;
+            /*width: 60px;
             height: 60px;
-            position: absolute;
+            position: absolute;*/
             background-color: red;
-            border-radius: 100%;
+            /*border-radius: 100%;
             align-items: center;
             display: flex;
-            justify-content: center;
+            justify-content: center;*/
         }
 
         .num {
@@ -51,16 +48,17 @@
             flex-direction: row;
             border-style: solid;
             margin: 10px;
-            height: 200px;
+            /*height: 200px;*/
         }
+
         .line {
-          
             width: 20px;
-           align-items:center;
+            align-items: center;
         }
+
         .body {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             box-sizing: border-box;
             display: -webkit-box;
             display: -webkit-flex;
@@ -70,12 +68,18 @@
             flex: 0 1 auto;
             -webkit-flex-wrap: wrap;
             flex-wrap: wrap;
+            padding: 0 10px;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            overflow-x: hidden;
+            overflow-y: hidden;
         }
 
         .info {
             display: flex;
             flex-direction: column;
-            margin: 40px;
+            /*margin: 40px 40px 0 40px;*/
             justify-content: space-around;
             align-items: center;
         }
@@ -94,8 +98,73 @@
             width: 300px;
             height: 300px;
         }
+
+        .title {
+            background: -webkit-linear-gradient(left, rgb(38, 183, 227), rgb(15, 122, 216));
+            /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(right, rgb(38, 183, 227), rgb(15, 122, 216));
+            /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(right, rgb(238, 183, 227), rgb(15, 122, 216));
+            /* Firefox 3.6 - 15 */
+            background: linear-gradient(to right, rgb(38, 183, 227), rgb(15, 122, 216));
+            /* 标准的语法 */
+            width: 100%;
+            text-align: center;
+            font-size: 200%;
+            color: white;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+
+            .row > div {
+                border-top: 1px solid white;
+                border-left: 1px solid white;
+                padding: 5px 10px;
+            }
+
+        .line1 .row > div:not(.linename1) {
+            background-color: rgb(234, 234, 234);
+            width: 5%;
+            text-align: center;
+        }
+
+        .line2 .row > div:not(.linename2) {
+            background-color: rgb(216, 216, 216);
+            width: 5%;
+            text-align: center;
+        }
+
+        .linename1 {
+            background-color: rgb(176, 232, 231);
+            width: 12%;
+        }
+
+        .linename2 {
+            background-color: rgb(152, 217, 153);
+            width: 12%;
+        }
+
+        .paiban {
+            font-size: 25px;
+            padding: 20px;
+        }
+
+        .line1 {
+            border-bottom: 1px solid white;
+        }
+
+        .line2 {
+            border-bottom: 1px solid white;
+        }
     </style>
     <script>
+        //$(window).on("load resize", function () {
+        //    var h = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight;
+        //    $("body").css("height", h);
+        //});
         function Changeworker(id) {
             layer.open({
                 title: '调换工人',
@@ -137,38 +206,96 @@
 
 
 <body class="body">
-    @if (Model != null && Model.Count > 0)
-    {
-        var linelist = (List<string>)ViewBag.linelist;
-        foreach (var line in linelist)
+
+    <div class="title">
+        新金桥车间流水线工位安排表
+        <div style="float: right;margin-right: 10%;font-size: 100%;">@DateTime.Now.ToLongDateString()</div>
+    </div>
+    <div class="paiban">
+        @if (Model != null && Model.Count > 0)
         {
-            var paiban = Model.Where(m => m.LName == line);
-
-            <div class="gongwei   num" style="width: 20px;align-items:center;">
-                @line
-            </div>
-
-            foreach (var item in paiban)
+            var linelist = (List<string>)ViewBag.linelist;
+            int i = 1;
+            foreach (var line in linelist)
             {
-                <div class="gongwei">
-                    <div class="img">
-                        <text class="code">@item.StationIndex</text>
-                    </div>
-                    <div class="info">
-                        <img class="ico" src="~/Content/前台.png" />
-                        <div class=" name">
+                var paiban = Model.Where(m => m.LName == line);
+                i++;
+                if (paiban != null && paiban.Count() > 0)
+                {
 
-                            <text class="num">@item.StationName</text>
+                    if (i % 2 == 0)
+                    {
+                        <div class="line1">
+                            <div class="row">
+                                <div class="linename1">@line <span style="color: red;">（@paiban.Count()）</span></div>
+                                @foreach (var item in paiban)
+                                {
+                                    <div>@item.StationName</div>
+                                }
+                            </div>
+
+
+                            <div class="row">
+                                <div class="linename1">@paiban.FirstOrDefault().TName</div>
+                                @foreach (var item in paiban)
+                                {
+                                    <div>@item.WName</div>
+                                }
+                            </div>
                         </div>
-                        <div data-toggle="tooltip" title="点击换人" class=" name" onclick="Changeworker(@item.Id)">
-                            <text class="num">@item.WName</text>
+                    }
+                    else
+                    {
+                        <div class="line2">
+                            <div class="row">
+                                <div class="linename2">@line<span style="color: red;">（@paiban.Count()）</span></div>
+                                @foreach (var item in paiban)
+                                {
+                                    <div>@item.StationName</div>
+                                }
+                            </div>
+
+                            <div class="row">
+                                <div class="linename2">@paiban.FirstOrDefault().TName</div>
+                                @foreach (var item in paiban)
+                                {
+                                    <div>@item.WName</div>
+                                }
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    }
+
+                }
+                else
+                {
+                    if (i % 2 == 0)
+                    {
+                        <div class="line1">
+                            <div class="row">
+                                <div class="linename1">@line <span style="color: red;">（0）</span></div>
+                                <div>暂无</div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="line2">
+                            <div class="row">
+                                <div class="linename2">@line<span style="color: red;">（@paiban.Count()）</span></div>
+
+                                <div>暂无</div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                }
+
             }
-        }
-    }
 
+        }
+    </div>
 
 </body>
 <article class="page-container">

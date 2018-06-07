@@ -8,9 +8,12 @@
             <th width="50">员工编码</th>
             <th width="100">员工名称</th>
             <th width="50">任务编码</th>
+            <th width="50">任务名称</th>
+            <th width="50">任务日期</th>
             <th width="50">任务数量</th>
             <th width="100">好件统计</th>
             <th width="100">坏件统计</th>
+            <th width="100">合计汇总</th>
         </tr>
     </thead>
     <tbody>
@@ -23,13 +26,27 @@
                     <td>@Html.DisplayFor(modelItem => item.WNo)</td>
                     <td>@Html.DisplayFor(modelItem => item.WName)</td>
                     <td>@Html.DisplayFor(modelItem => item.TaskCode)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TaskName)</td>
+                    <td>@item.StartDateTime.ToShortDateString()</td>
                     <td>@Html.DisplayFor(modelItem => item.TaskCount)</td>
 
                     <td>@Html.DisplayFor(modelItem => item.GoodCount)</td>
                     <td>@Html.DisplayFor(modelItem => item.BadCount)</td>
-
+                    <td>@(item.GoodCount + item.BadCount)</td>
                 </tr>
             }
+                <tr class="text-c">
+
+                    <td>汇总</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>@Model.Sum(item => item.TaskCount)</td>
+                    <td>@Model.Sum(item => item.GoodCount)</td>
+                    <td>@Model.Sum(item => item.BadCount)</td>
+                    <td>@(Model.Sum(item => item.BadCount) + Model.Sum(item => item.GoodCount))</td>
+                </tr>
         }
 
     </tbody>
